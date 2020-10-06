@@ -2,10 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
+use App\Models\Comment;
 use App\Models\User;
 
 use App\Models\Role;
 use App\Models\Permission;
+use App\Models\Post;
 // use LaratrustSeeder;
 // use Database\Seeders\LaratrustSeeder;
 
@@ -23,5 +26,10 @@ class DatabaseSeeder extends Seeder
         User::factory(10)->create();
 
         $this->call(LaratrustSeeder::class);
+
+        Category::factory(10)->create();
+        Post::factory(20)->create();
+
+        // Comment::factory(20)->create();
     }
 }

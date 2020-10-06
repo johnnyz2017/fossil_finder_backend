@@ -19,19 +19,40 @@ class LoginController extends Controller
     }
     //
     public function register(Request $request){
-        $request->validate([
+        $validator = $request->validate([
             'name' => 'required',
             'email' => 'required | email',
             'password' => 'required | min:6'
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
-        ]);
+        // if($validator->fails()){
+        //     return response()->json([
+        //         'statusCode' => 402,
+        //         'message' => 'Failed to validate'
+        //     ]);
+        // }
+
+        $input = $request->all();
+        // dd($input);
+        $input['password'] = bcrypt($input['password']);
+        //$2y$10$7zEYkavlqyESRq1P19Yw8.NfrDCxck9CfwZe892Xhvyq3t2cg2aaK
+        //$2y$10$.RrLrneC3hwA6DZB2MIYguS3PMr5BmeC8IlpqPeL1L.D0IRohUaSe
+        //12345678
+
+        //password
+        //
+        // dd($input);
+        // echo $input;
+
+        $user = User::create($input);
+        // $user = User::create([
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'email_verified_at' => now(),
+        //     'password' => $request->passsword,
+        //     // 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        //     'remember_token' => Str::random(10),
+        // ]);
 
         $token = $user->createToken($user->email.'-'.now());
 
@@ -50,7 +71,7 @@ class LoginController extends Controller
         //     'email' => 'required | email | exists:users.email',
         //     'password' => 'required'
         // ]);
-        $data = $request->validate([
+        $credentials = $request->validate([
             'email' => 'required | email',
             'password' => 'required'
         ]);
@@ -58,8 +79,9 @@ class LoginController extends Controller
         // return response()->json($request);
         // return $request;
 
-        if(Auth::attempt($data)){
+        if(Auth::attempt($credentials)){
             $user = Auth::user();
+            // $user = auth()->user(); 
             $token = $user->createToken($user->email.'-'.now());
 
             return response()->json([
