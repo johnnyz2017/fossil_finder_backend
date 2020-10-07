@@ -12,7 +12,7 @@ use App\Models\Post;
 class PostController extends Controller
 {
     public function index(){
-        
+
         $posts = Post::all();
         // foreach($posts as $post){
         //     echo $post;
@@ -21,7 +21,8 @@ class PostController extends Controller
         return response()->json(
             [
                 "statusCode" => 200,
-                "data" => json_encode($posts)
+                // "data" => json_encode($posts)
+                "data" => $posts->toArray()
             ]
         );
     }

@@ -35,11 +35,11 @@ class Category extends Model
     {
         $data = parent::toArray();
 
-        // if($this->posts){
-        //     $data['posts'] = $this->posts;
-        // }else{
-        //     $data['posts'] = null;
-        // }
+        if($this->posts){
+            $data['posts'] = $this->posts->toArray();
+        }else{
+            $data['posts'] = null;
+        }
 
         if($this->childs){
             $children = [];

@@ -30,4 +30,30 @@ class Post extends Model
     public function auth_user(){
         return $this->belongsTo(\App\Models\User::class, 'auth_user_id', 'id');
     }
+
+    public function toArray()
+    {
+        $data = parent::toArray();
+        if($this->images){
+            $image_list = explode(',', $this->images);
+            $images = [];
+            foreach($image_list as $image){
+                $img = [];
+                $img['url'] = $image;
+                array_push($images, $img);
+            }
+            $data['images'] = $images;
+        }else{
+            $data['images'] = [];
+        }
+
+        if($this->user_id){
+            //echo $this->user_id;
+            //echo User::find($this->user_id)->name;
+            $data['author'] = User::find($this->user_id)->name;
+        }else{
+            $data['author'] = 'unkown';
+        }
+        return $data;
+    }
 }

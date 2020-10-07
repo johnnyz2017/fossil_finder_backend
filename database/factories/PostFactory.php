@@ -44,7 +44,7 @@ class PostFactory extends Factory
             // 'category_id' => 1,
             // 'final_category_id' => 1,
             // 'final_category_id_from' => 1,
-            'images' => '',
+            'images' => 'images/others/hs001.jpeg,images/others/hs002.jpeg,images/others/hs003.jpeg',
             'coordinate_longitude' => $this->faker->numberBetween(120, 150),
             'coordinate_latitude' => $this->faker->numberBetween(30, 50),
             'coordinate_altitude' => $this->faker->numberBetween(320, 550),
