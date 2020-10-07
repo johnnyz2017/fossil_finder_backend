@@ -10,6 +10,7 @@ use App\Http\Controllers\api\v1\UserController;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,4 +56,35 @@ Route::get('v1/post/{id}/category', [PostController::class, 'category']);
 Route::get('v1/post/{id}/user', [UserController::class, 'posts']);
 
 Route::get('v1/category/{id}/childs', [CategoryController::class, 'childs']);
-Route::get('v1/category', [CategoryController::class, 'full_category']);
+Route::get('v1/category/posts', [CategoryController::class, 'posts']);
+
+Route::get('v1/category', function () {
+    $category = Category::with('childs')->get();
+
+    return $category->toArray();
+});
+
+Route::get('v1/users', function () {
+    // $user->hasRole('owner');   // false
+    // $user->hasRole('admin');   // true
+    // $user->isAbleTo('edit-user');   // false
+    // $user->isAbleTo('create-post'); // true
+    // $user = App\Models\User::with('roles')->first();
+    // $user = User::whereRoles('administrator')->get(); //select * from `users` where `roles` = administrator
+    $user = User::all()->first();
+    // echo $user->hasRole('administrator'); //Column not found: 1054 Unknown column 'roles' in 'where clause' (SQL: select * from `users` where `roles` = administrator)
+
+    //$email = DB::table('users')->where('name', 'John')->value('email');
+    $role_id = DB::table('role_user')->where('user_id', $user->id)->value('role_id');
+    // echo $role_id;
+    // $user_type = DB::table('role_user')->where('user_id', $user->id)->value('user_type');
+    // echo $user_type;
+    if($role_id < 3){
+        echo 'admin or super admin';
+    }else{
+        echo 'non admin';
+    }
+
+    // return $user->toJson();
+    return $user->toArray();
+});

@@ -30,7 +30,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'email_verified_at', 'updated_at'
     ];
 
     /**
@@ -45,6 +45,11 @@ class User extends Authenticatable
 
     public function posts(){
         return $this->hasMany(Post::class, 'user_id', 'id');
+    }
+
+    public function roles(){
+        // return $this->belongsToMany(Role::class, '')
+        return User::whereRoles('administrator')->get();
     }
 
     // public function admins(){
