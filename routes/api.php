@@ -37,20 +37,8 @@ Route::post('v1/register', [LoginController::class, 'register']);
 Route::post('v1/login', [LoginController::class, 'login']);
 Route::get('v1/test', [LoginController::class, 'test'])->middleware('auth:api');
 
-Route::get('v1/post', [PostController::class, 'index']);
-
-// Route::get('v1/post', function () {        
-//     $posts = \App\Models\Post::all();
-
-//     // foreach($posts as $post){
-//     //     echo $post;
-//     // }
-
-//     return response()->json([
-//         "statusCode" => 200,
-//         "data" => json_encode($posts)
-//     ]);
-// });
+Route::apiResource('v1/post', PostController::class); //OK
+// Route::get('v1/post', [PostController::class, 'index']);
 
 Route::get('v1/post/{id}/category', [PostController::class, 'category']);
 Route::get('v1/post/{id}/user', [UserController::class, 'posts']);
@@ -64,6 +52,7 @@ Route::get('v1/category', function () {
     return $category->toArray();
 });
 
+//test
 Route::get('v1/users', function () {
     // $user->hasRole('owner');   // false
     // $user->hasRole('admin');   // true

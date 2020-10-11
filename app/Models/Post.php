@@ -39,10 +39,10 @@ class Post extends Model
             $images = [];
             foreach($image_list as $image){
                 $img = [];
-                $img['url'] = $image;
+                $img['url'] = $image; // use url($image);
                 array_push($images, $img);
             }
-            $data['images'] = $images;
+            $data['images'] = $images; 
         }else{
             $data['images'] = [];
         }
