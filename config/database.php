@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Str;
 
-// $DATABASE_URL=parse_url('DATABASE_URL');
-
 return [
 
     /*
@@ -55,10 +53,9 @@ return [
             'database' => env('DB_DATABASE', 'heroku_a5bb9a2acf7d34f'),
             'username' => env('DB_USERNAME', 'bd54e9eff87223'),
             'password' => env('DB_PASSWORD', '57d6fa69'),
-            // mysql://ba2cae0b28060e:e0dabf43@us-cdbr-east-02.cleardb.com/heroku_3bae791c7bef5dc
             // mysql://bd54e9eff87223:57d6fa69@us-cdbr-east-02.cleardb.com/heroku_a5bb9a2acf7d34f
 
-            // LOCAL
+            // ORIGINAL
             // 'host' => env('DB_HOST', '127.0.0.1'),
             // 'port' => env('DB_PORT', '3306'),
             // 'database' => env('DB_DATABASE', 'forge'),
