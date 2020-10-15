@@ -29,4 +29,20 @@ class UserController extends Controller
             "data" => json_encode($posts)
         ]);
     }
+
+    public function comments($id){
+        $user = User::find($id);
+        if($user == null){
+            return response()->json([
+                "statusCode" => 200,
+                "data" => json_encode($user)
+            ]);
+        }
+        $comments = $user->comments;
+
+        return response()->json([
+            "statusCode" => 200,
+            "data" => json_encode($comments)
+        ]);
+    }
 }

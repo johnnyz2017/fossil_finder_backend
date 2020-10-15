@@ -19,11 +19,11 @@ class CreatePostsTable extends Migration
             $table->bigInteger('user_id')->unsigned(); //发布用户
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->bigInteger('auth_user_id')->unsigned(); //最后审核用户？
+            $table->bigInteger('auth_user_id')->unsigned()->nullable(); //最后审核用户？
             $table->foreign('auth_user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             
-            $table->integer('temp_id');
-            $table->integer('perm_id');
+            $table->integer('temp_id')->unsigned();
+            $table->integer('perm_id')->unsigned()->nullable();
             $table->string('title');
             $table->longText('content');
             $table->boolean('private')->unsigned()->default(false); //个人设置，是否私有
@@ -33,10 +33,10 @@ class CreatePostsTable extends Migration
             $table->bigInteger('category_id')->unsigned(); //类别
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
             
-            $table->bigInteger('final_category_id')->unsigned(); //最终类别
+            $table->bigInteger('final_category_id')->unsigned()->nullable(); //最终类别
             $table->foreign('final_category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
             
-            $table->bigInteger('final_category_id_from')->unsigned(); //最终类别来自于，默认会是自己
+            $table->bigInteger('final_category_id_from')->unsigned()->nullable(); //最终类别来自于，默认会是自己
             $table->foreign('final_category_id_from')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             
             $table->double('coordinate_longitude'); //经度

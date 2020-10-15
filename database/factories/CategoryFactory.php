@@ -28,15 +28,8 @@ class CategoryFactory extends Factory
             'parent_id' => $this->faker->numberBetween(0, 10),
             // 'name' => Str::random(10),
             // 'description' => Str::random(30)
-            'name' => $this->faker->word(),
+            'name' => 'Category '.$this->faker->word(),
             'description' => $this->faker->sentence($nbWords = 6, $variableNbWords = true)
         ];
     }
-
-    // $table->id();
-    // $table->bigInteger('parent_id')->unsigned()->default(0); // 0 stands for no parent
-    // $table->foreign('parent_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
-    // $table->string('name');
-    // $table->string('description');
-    // $table->timestamps();
 }

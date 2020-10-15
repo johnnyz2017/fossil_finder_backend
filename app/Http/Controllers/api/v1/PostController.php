@@ -42,6 +42,21 @@ class PostController extends Controller
             "data" => json_encode($category)
         ]);
     }
+
+    public function comments ($id){
+        $posts = \App\Models\Post::find($id);
+        if($posts == null){
+            return response()->json([
+                "statusCode" => 200,
+                "data" => json_encode($posts)
+            ]);
+        }
+        $comment = $posts->comments;
+        return response()->json([
+            "statusCode" => 200,
+            "data" => json_encode($comment)
+        ]);
+    }
     
     public function store(Request $req){
 

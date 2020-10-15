@@ -31,6 +31,10 @@ class Post extends Model
         return $this->belongsTo(\App\Models\User::class, 'auth_user_id', 'id');
     }
 
+    public function comments(){
+        return $this->hasMany(\App\Models\Comment::class, 'post_id', 'id');
+    }
+
     public function toArray()
     {
         $data = parent::toArray();
@@ -54,6 +58,7 @@ class Post extends Model
         }else{
             $data['author'] = 'unkown';
         }
+
         return $data;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,23 +25,33 @@ class PostFactory extends Factory
      */
     public function definition()
     {
+        $users = collect(User::all()->modelKeys());
+        $categories = collect(Category::all()->modelKeys());
+        $word = $this->faker->word();
         return [
             // 'user_id' => \App\Models\User::inRandomOrder()->fist()->id,
             // 'user_id' => User::all()->inRandomOrder()->first()->id,
-            'user_id' => User::all()->shuffle()->first()->id,
+            // 'user_id' => User::all()->shuffle()->first()->id,
+            'user_id' => $users->random(),
             'auth_user_id' => 1,
             'temp_id' => $this->faker->numberBetween(10000, 11000),
             'perm_id' => $this->faker->numberBetween(20000, 21000),
             'address' => $this->faker->address,
             // 'address' => $this->faker->streetAddress,
             // 'title' => $this->faker->sentence(5),
-            'title' => 'Title ',
-            'content' => 'Content ',
+            'title' => 'Title of'.$word,
+            'content' => 'Content of '.$word,
             // 'content' => $this->faker->sentences(10),
             // 'category_id' => \App\Models\Category::inRandomOrder()->first()->id,
-            'category_id' => \App\Models\Category::all()->shuffle()->first()->id,
-            'final_category_id' => \App\Models\Category::all()->shuffle()->first()->id,
-            'final_category_id_from' => User::all()->shuffle()->first()->id,
+
+            'category_id' => $categories->random(),
+            'final_category_id' => $categories->random(),
+            'final_category_id_from' => $users->random(),
+
+            // 'category_id' => \App\Models\Category::all()->shuffle()->first()->id,
+            // 'final_category_id' => \App\Models\Category::all()->shuffle()->first()->id,
+            // 'final_category_id_from' => User::all()->shuffle()->first()->id,
+            
             // 'category_id' => 1,
             // 'final_category_id' => 1,
             // 'final_category_id_from' => 1,
