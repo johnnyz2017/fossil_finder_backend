@@ -21,3 +21,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/tree', [App\Http\Controllers\TreeViewController::class, 'treeView']);
+
+Route::get('category-tree-view', [App\Http\Controllers\TreeViewController::class, 'manageCategory']);
+Route::post('add-category', [App\Http\Controllers\TreeViewController::class, 'addCategory'])->name('add.category');
