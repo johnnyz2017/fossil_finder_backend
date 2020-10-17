@@ -29,7 +29,8 @@ class CategoryFactory extends Factory
             // 'name' => Str::random(10),
             // 'description' => Str::random(30)
             'title' => 'Category '.$this->faker->word(),
-            'description' => $this->faker->sentence($nbWords = 6, $variableNbWords = true)
+            // 'description' => $this->faker->sentence($nbWords = 6, $variableNbWords = true)
+            'description' => $this->faker->text()
         ];
     }
 }

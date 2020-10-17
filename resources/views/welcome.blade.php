@@ -20,8 +20,19 @@
             }
         </style>
     </head>
-    <body class="antialiased">
-        <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
+
+<body class="c-app">
+    <div class="c-sidebar">
+      <!-- Sidebar content here -->
+    </div>
+    <div class="c-wrapper">
+      <header class="c-header">
+        <!-- Header content here -->
+      </header>
+      <div class="c-body">
+        <main class="c-main">
+          <!-- Main content here -->
+          <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
             @if (Route::has('login'))
                 <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                     @auth
@@ -127,6 +138,12 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </body>
+          </div>
+        </main>
+      </div>
+      <footer class="c-footer">
+        <!-- Footer content here -->
+      </footer>
+    </div>
+  </body>
 </html>

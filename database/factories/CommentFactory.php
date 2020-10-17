@@ -34,7 +34,8 @@ class CommentFactory extends Factory
             'user_id' => $users->random(),
             'post_id' => $posts->random(),
             'title' => 'Comment Title '.$word,
-            'content' => 'Conent of Comment '.$word,
+            // 'content' => 'Conent of Comment '.$word,
+            'content' => $this->faker->text(),
             'category_id' => $categories->random()
         ];
     }

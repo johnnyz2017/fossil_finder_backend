@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MenuController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,3 +27,7 @@ Route::get('/tree', [App\Http\Controllers\TreeViewController::class, 'treeView']
 
 Route::get('category-tree-view', [App\Http\Controllers\TreeViewController::class, 'manageCategory']);
 Route::post('add-category', [App\Http\Controllers\TreeViewController::class, 'addCategory'])->name('add.category');
+
+Route::get('menus', [MenuController::class, 'index']);
+Route::get('menus-show', [MenuController::class, 'show']);
+Route::post('menus', [MenuController::class, 'store'])->name('menus.store');

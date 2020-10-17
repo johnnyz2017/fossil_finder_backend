@@ -27,7 +27,7 @@
 				        </ul>
 	  				</div>
 	  				<div class="col-md-6">
-	  					<h3>Add New Category</h3>
+						  <h3>Add New Category</h3>
 				  			{!! Form::open(['route'=>'add.category']) !!}
 				  				@if ($message = Session::get('success'))
 									<div class="alert alert-success alert-block">
