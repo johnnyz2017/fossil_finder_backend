@@ -59,6 +59,25 @@ class Post extends Model
             $data['author'] = 'unkown';
         }
 
+        if($this->comments){
+            $data['comments'] = $this->comments; 
+        }else{
+            $data['comments'] = [];
+        }
+        // $data['author'] = 'Author Test';
+
         return $data;
+
+        //test
+        // $newdata  = array(
+        //     'id' => $this->id, 
+        //     'title' => $this->title,
+        //     'contents' => $this->content,
+        //     'author' => 'autor test',
+        //     'images' => [],
+        //     'comments' => []
+        // );
+
+        // return $newdata;
     }
 }

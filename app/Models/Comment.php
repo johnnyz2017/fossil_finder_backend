@@ -27,6 +27,14 @@ class Comment extends Model
     // public function category(){
     //     return $this->belongsTo(Category::class, 'category_id', 'id');
     // }
+
+    public function toArray()
+    {
+        $data = parent::toArray();
+        $data['author'] = User::find($this->user_id)->name;
+
+        return $data;
+    }
 }
 
 // $table->bigInteger('user_id')->unsigned()->nullable();  //发表评论的用户id

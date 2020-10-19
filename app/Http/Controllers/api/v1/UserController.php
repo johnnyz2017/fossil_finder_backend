@@ -14,7 +14,11 @@ class UserController extends Controller
         return $users->toArray();
     }
 
-    public function posts($id){
+    public function posts(){
+        return $this->hasMany(Post::class);
+    }
+
+    public function post($id){
         $user = User::find($id);
         if($user == null){
             return response()->json([
