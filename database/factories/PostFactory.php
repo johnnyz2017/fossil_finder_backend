@@ -27,6 +27,9 @@ class PostFactory extends Factory
     {
         $users = collect(User::all()->modelKeys());
         $categories = collect(Category::all()->modelKeys());
+
+        $img_list = array("images/others/hs001.jpeg","images/others/hs002.jpeg","images/others/hs003.jpeg");
+        shuffle($img_list);
         // $word = $this->faker->word();
         $word = $this->faker->text(50);
         return [
@@ -46,7 +49,10 @@ class PostFactory extends Factory
             'private' => false,
             'published' => true,
 
-            'images' => 'images/others/hs001.jpeg,images/others/hs002.jpeg,images/others/hs003.jpeg',
+            // 'images' => shuffle($img_list) > 0 ? $img_list : $img_list[random_int(0, 2)],
+            // 'images' => $img_list[random_int(0, 2)],
+            'images' => implode(',', $img_list),
+            // 'images' => 'images/others/hs001.jpeg,images/others/hs002.jpeg,images/others/hs003.jpeg',
             // 'images' => String.join([',', [$this->faker->imageUrl()]]),
             'coordinate_longitude' => 121.26661838261842 + $this->faker->numberBetween(0, 100) / 10000.0,
             'coordinate_latitude' => 31.111403203411864 + $this->faker->numberBetween(0, 100) / 10000.0,
