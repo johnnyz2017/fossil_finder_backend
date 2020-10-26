@@ -30,7 +30,7 @@ class CategoryFactory extends Factory
             // 'description' => Str::random(30)
             'title' => 'Category '.$this->faker->word(),
             // 'description' => $this->faker->sentence($nbWords = 6, $variableNbWords = true)
-            'description' => $this->faker->text()
+            'description' => $this->faker->text(50)
         ];
     }
 }

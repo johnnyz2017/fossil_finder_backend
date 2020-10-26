@@ -28,7 +28,7 @@ class PostFactory extends Factory
         $users = collect(User::all()->modelKeys());
         $categories = collect(Category::all()->modelKeys());
         // $word = $this->faker->word();
-        $word = $this->faker->text(20);
+        $word = $this->faker->text(50);
         return [
             'user_id' => $users->random(),
             'auth_user_id' => 1,
@@ -36,7 +36,7 @@ class PostFactory extends Factory
             'perm_id' => $this->faker->numberBetween(20000, 21000),
             'address' => $this->faker->address,
             // 'title' => $this->faker->sentence(5),
-            'title' => 'Title of'.$word,
+            'title' => 'Title of'.$this->faker->word(),
             'content' => 'Content of '.$word,
             // 'content' => $this->faker->sentences(10),
             'category_id' => $categories->random(),
