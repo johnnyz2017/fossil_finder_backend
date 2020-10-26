@@ -15,9 +15,9 @@ class PostController extends Controller
     //GET /post
     public function index(){
 
-        // $posts = Post::all(); //no pagination
+        $posts = Post::all(); //no pagination
         // $posts = DB::table('posts')->paginate(5); //no customized data
-        $posts = Post::paginate(10);
+        // $posts = Post::paginate(10);
 
 
         // dd($posts['data']);
@@ -28,6 +28,7 @@ class PostController extends Controller
         return response()->json(
             [
                 "statusCode" => 200,
+                'paginated' => false,
                 'mesage' => 'success to get posts',
                 "data" => $posts->toArray()
                 // "data" => $posts
