@@ -62,4 +62,11 @@ class User extends Authenticatable
     // }
 
     // public
+
+    public function toArray()
+    {
+        $data = parent::toArray();
+
+        return $data;
+    }
 }

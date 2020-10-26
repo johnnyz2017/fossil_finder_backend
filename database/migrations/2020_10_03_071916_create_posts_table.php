@@ -26,8 +26,8 @@ class CreatePostsTable extends Migration
             $table->integer('perm_id')->unsigned()->nullable();
             $table->string('title');
             $table->longText('content');
-            $table->boolean('private')->unsigned()->default(false); //个人设置，是否私有
-            $table->boolean('published')->unsigned()->default(false); //管理员审核，是否可以发布
+            $table->boolean('private')->default(false); //个人设置，是否私有
+            $table->boolean('published')->default(false); //管理员审核，是否可以发布
             $table->longText('images'); //images url array
             
             $table->bigInteger('category_id')->unsigned(); //类别

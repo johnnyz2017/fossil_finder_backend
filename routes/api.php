@@ -37,43 +37,47 @@ Route::post('v1/register', [LoginController::class, 'register']);
 Route::post('v1/login', [LoginController::class, 'login']);
 Route::get('v1/test', [LoginController::class, 'test'])->middleware('auth:api');
 
-Route::apiResource('v1/post', PostController::class); //OK
-// Route::get('v1/post', [PostController::class, 'index']);
+// Route::apiResource('v1/posts', PostController::class); //OK
+Route::get('v1/posts', [PostController::class, 'index']);
+Route::get('v1/posts/{id}', [PostController::class, 'show']);
 
-Route::get('v1/post/{id}/category', [PostController::class, 'category']);
-Route::get('v1/post/{id}/user', [UserController::class, 'posts']);
+Route::get('v1/posts/{id}/category', [PostController::class, 'category']);
+Route::get('v1/posts/{id}/user', [PostController::class, 'user']);
 
 Route::get('v1/category/{id}/childs', [CategoryController::class, 'childs']);
 Route::get('v1/category/posts', [CategoryController::class, 'posts']);
 
-Route::get('v1/category', function () {
+Route::get('v1/categories', function () {
     $category = Category::with('childs')->get();
+    // dd($category);
 
     return $category->toArray();
 });
 
+Route::get('v1/users/{id}', [UserController::class, 'show']);
+Route::get('v1/users', [UserController::class, 'index']);
 //test
-Route::get('v1/users', function () {
-    // $user->hasRole('owner');   // false
-    // $user->hasRole('admin');   // true
-    // $user->isAbleTo('edit-user');   // false
-    // $user->isAbleTo('create-post'); // true
-    // $user = App\Models\User::with('roles')->first();
-    // $user = User::whereRoles('administrator')->get(); //select * from `users` where `roles` = administrator
-    $user = User::all()->first();
-    // echo $user->hasRole('administrator'); //Column not found: 1054 Unknown column 'roles' in 'where clause' (SQL: select * from `users` where `roles` = administrator)
+// Route::get('v1/users', function () {
+//     // $user->hasRole('owner');   // false
+//     // $user->hasRole('admin');   // true
+//     // $user->isAbleTo('edit-user');   // false
+//     // $user->isAbleTo('create-post'); // true
+//     // $user = App\Models\User::with('roles')->first();
+//     // $user = User::whereRoles('administrator')->get(); //select * from `users` where `roles` = administrator
+//     // echo $user->hasRole('administrator'); //Column not found: 1054 Unknown column 'roles' in 'where clause' (SQL: select * from `users` where `roles` = administrator)
 
-    //$email = DB::table('users')->where('name', 'John')->value('email');
-    $role_id = DB::table('role_user')->where('user_id', $user->id)->value('role_id');
-    // echo $role_id;
-    // $user_type = DB::table('role_user')->where('user_id', $user->id)->value('user_type');
-    // echo $user_type;
-    if($role_id < 3){
-        echo 'admin or super admin';
-    }else{
-        echo 'non admin';
-    }
+//     //$email = DB::table('users')->where('name', 'John')->value('email');
+//     // echo $role_id;
+//     // $user_type = DB::table('role_user')->where('user_id', $user->id)->value('user_type');
+//     // echo $user_type;
 
-    // return $user->toJson();
-    return $user->toArray();
-});
+
+//     $user = User::all()->first();
+//     $role_id = DB::table('role_user')->where('user_id', $user->id)->value('role_id');
+//     if($role_id < 3){
+//         echo 'admin or super admin';
+//     }else{
+//         echo 'non admin';
+//     }
+//     return $user->toArray();
+// });

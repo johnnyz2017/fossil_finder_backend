@@ -14,6 +14,15 @@ class UserController extends Controller
         return $users->toArray();
     }
 
+    public function show($id){
+        $user = User::find($id);
+
+        return response()->json([
+            "statusCode" => 200,
+            "data" => $user->toArray()
+        ]);
+    }
+
     public function posts(){
         return $this->hasMany(Post::class);
     }

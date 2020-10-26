@@ -35,19 +35,23 @@ class Category extends Model
     {
         $data = parent::toArray();
 
-        if($this->posts){
-            $data['posts'] = $this->posts->toArray();
-        }else{
-            $data['posts'] = null;
-        }
+        // if($this->posts){
+        //     $data['posts'] = $this->posts->toArray();
+        // }else{
+        //     $data['posts'] = null;
+        // }
 
-        if($this->childs){
-            $children = [];
-            foreach($this->childs as $child){
-                array_push($children, $child->toArray());
-            }
-            $data['children'] = $children;
-        }
+        // if($this->childs){
+        //     $children = [];
+        //     foreach($this->childs as $child){
+        //         array_push($children, $child->toArray());
+        //     }
+        //     $data['children'] = $children;
+        // }
+
+        // if($this->parent){
+        //     $data['parent'] = $this->parent;
+        // }
 
         return $data;
     }

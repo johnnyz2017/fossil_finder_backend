@@ -19,43 +19,71 @@ class PostController extends Controller
         // $posts = DB::table('posts')->paginate(5); //no customized data
         $posts = Post::paginate(10);
 
+
+        // dd($posts['data']);
+        // foreach($posts as $post){
+        //     $post = $post->allToArray();
+        // }
+
         return response()->json(
             [
                 "statusCode" => 200,
                 'mesage' => 'success to get posts',
-                // "data" => json_encode($posts)
                 "data" => $posts->toArray()
+                // "data" => $posts
             ]
         );
     }
 
     public function category ($id) {
-        $posts = \App\Models\Post::find($id);
-        if($posts == null){
-            return response()->json([
-                "statusCode" => 200,
-                "data" => json_encode($posts)
-            ]);
+        // return response()->json(
+        //     [
+        //         "statusCode" => 200,
+        //         'mesage' => 'success to get posts',
+        //         "data" => 'test'
+        //     ]
+        // );
+
+        $post = \App\Models\Post::find($id);
+        // dd($post);
+        if($post == null){
+            response()->json([
+                'success' => false,
+                'message' => 'Post not found '
+            ], 404);
         }
-        $category = $posts->category;
+
+        // return response()->json([
+        //     'success' => true,
+        //     "data" => $post->toArray()
+        // ], 200);
+
+        $category = $post->category;
+        // dd($category);
+        if(!$category){
+            response()->json([
+                'success' => false,
+                'message' => 'Category not found '
+            ], 404);
+        }
         return response()->json([
-            "statusCode" => 200,
-            "data" => json_encode($category)
-        ]);
+            'success' => true,
+            "data" => $category->toArray()
+        ], 200);
     }
 
     public function comments ($id){
-        $posts = \App\Models\Post::find($id);
-        if($posts == null){
+        $post = \App\Models\Post::find($id);
+        if(!$post){
             return response()->json([
-                "statusCode" => 200,
-                "data" => json_encode($posts)
+                "statusCode" => 404,
+                "data" => $post->toArray()
             ]);
         }
-        $comment = $posts->comments;
+        $comment = $post->comments;
         return response()->json([
             "statusCode" => 200,
-            "data" => json_encode($comment)
+            "data" => $comment->toArray()
         ]);
     }
     
@@ -104,22 +132,23 @@ class PostController extends Controller
     //     ]);
     // }
  
-    // public function show($id)
-    // {
-    //     $post = auth()->user()->posts->find($id);
+    public function show($id)
+    {
+        // $post = auth()->user()->posts->find($id);
+        $post = Post::find($id);
  
-    //     if (!$post) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Post not found '
-    //         ], 400);
-    //     }
+        if (!$post) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Post not found '
+            ], 400);
+        }
  
-    //     return response()->json([
-    //         'success' => true,
-    //         'data' => $post->toArray()
-    //     ], 400);
-    // }
+        return response()->json([
+            'success' => true,
+            'data' => $post->toArray()
+        ], 200);
+    }
  
     // public function store(Request $request)
     // {
@@ -190,4 +219,28 @@ class PostController extends Controller
     //         ], 500);
     //     }
     // }
+
+    public function user($id){
+        $post = Post::find($id);
+
+        if(!$post){
+            return response()->json([
+                'success' => false,
+                'message' => 'Post not found '
+            ], 400);
+        }
+
+        $user = $post->user;
+        if(!$user){
+            return response()->json([
+                'success' => false,
+                'message' => 'No User Specified'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $user->toArray()
+        ], 200);
+    }
 }

@@ -30,7 +30,5 @@ class DatabaseSeeder extends Seeder
         Category::factory(10)->create();
         Post::factory(20)->create();
         Comment::factory(30)->create();
-
-        // Comment::factory(20)->create();
     }
 }

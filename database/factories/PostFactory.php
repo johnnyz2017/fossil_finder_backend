@@ -27,57 +27,32 @@ class PostFactory extends Factory
     {
         $users = collect(User::all()->modelKeys());
         $categories = collect(Category::all()->modelKeys());
-        $word = $this->faker->word();
+        // $word = $this->faker->word();
+        $word = $this->faker->text(20);
         return [
-            // 'user_id' => \App\Models\User::inRandomOrder()->fist()->id,
-            // 'user_id' => User::all()->inRandomOrder()->first()->id,
-            // 'user_id' => User::all()->shuffle()->first()->id,
             'user_id' => $users->random(),
             'auth_user_id' => 1,
             'temp_id' => $this->faker->numberBetween(10000, 11000),
             'perm_id' => $this->faker->numberBetween(20000, 21000),
             'address' => $this->faker->address,
-            // 'address' => $this->faker->streetAddress,
             // 'title' => $this->faker->sentence(5),
             'title' => 'Title of'.$word,
             'content' => 'Content of '.$word,
             // 'content' => $this->faker->sentences(10),
-            // 'category_id' => \App\Models\Category::inRandomOrder()->first()->id,
-
             'category_id' => $categories->random(),
             'final_category_id' => $categories->random(),
             'final_category_id_from' => $users->random(),
 
-            // 'category_id' => \App\Models\Category::all()->shuffle()->first()->id,
-            // 'final_category_id' => \App\Models\Category::all()->shuffle()->first()->id,
-            // 'final_category_id_from' => User::all()->shuffle()->first()->id,
-            
-            // 'category_id' => 1,
-            // 'final_category_id' => 1,
-            // 'final_category_id_from' => 1,
+            'private' => false,
+            'published' => true,
+
             'images' => 'images/others/hs001.jpeg,images/others/hs002.jpeg,images/others/hs003.jpeg',
-            'coordinate_longitude' => $this->faker->numberBetween(120, 150),
-            'coordinate_latitude' => $this->faker->numberBetween(30, 50),
-            'coordinate_altitude' => $this->faker->numberBetween(320, 550),
+            // 'images' => String.join([',', [$this->faker->imageUrl()]]),
+            'coordinate_longitude' => 121.26661838261842 + $this->faker->numberBetween(0, 100) / 10000.0,
+            'coordinate_latitude' => 31.111403203411864 + $this->faker->numberBetween(0, 100) / 10000.0,
+            // 'coordinate_longitude' => 121.26661838261842 + $this->faker->randomFloat(0.001, 0, 1.0),
+            // 'coordinate_latitude' => 31.111403203411864 + $this->faker->randomFloat(0.001, 0, 1.0),
+            'coordinate_altitude' => 500 + $this->faker->numberBetween(0, 100) / 10000.0
         ];
     }
-
-    // $table->bigInteger('user_id')->unsigned(); //发布用户
-    // $table->foreign('user_id')->references('id')->on('users');
-    // $table->bigInteger('auth_user_id')->unsigned(); //最后审核用户？
-    // $table->integer('temp_id');
-    // $table->integer('perm_id');
-    // $table->string('title');
-    // $table->longText('content');
-    // $table->boolean('private')->unsigned()->default(false); //个人设置，是否私有
-    // $table->boolean('published')->unsigned()->default(false); //管理员审核，是否可以发布
-    // $table->longText('images'); //images url array
-    // $table->integer('category_id')->unsigned(); //类别
-    // $table->foreign('category_id')->references('id')->on('categories');
-    // $table->integer('final_category_id')->unsigned(); //最终类别
-    // $table->bigInteger('final_category_id_from')->unsigned(); //最终类别来自于，默认会是自己
-    // $table->double('coordinate_longitude'); //经度
-    // $table->double('coordinate_latitude'); //纬度
-    // $table->double('coordinate_altitude'); //高度 海拔
-    // $table->string('address');
 }

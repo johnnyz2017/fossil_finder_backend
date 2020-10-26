@@ -52,19 +52,18 @@ class Post extends Model
         }
 
         if($this->user_id){
-            //echo $this->user_id;
-            //echo User::find($this->user_id)->name;
             $data['author'] = User::find($this->user_id)->name;
         }else{
             $data['author'] = 'unkown';
         }
+
+        $data['test'] = 'test';
 
         if($this->comments){
             $data['comments'] = $this->comments; 
         }else{
             $data['comments'] = [];
         }
-        // $data['author'] = 'Author Test';
 
         return $data;
 
@@ -80,4 +79,10 @@ class Post extends Model
 
         // return $newdata;
     }
+
+    // public function toArrayTest()
+    // {
+    //     $data = parent::toArray();
+    //     return $data;
+    // }
 }
