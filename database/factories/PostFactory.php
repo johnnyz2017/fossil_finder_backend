@@ -52,7 +52,8 @@ class PostFactory extends Factory
             'coordinate_latitude' => 31.111403203411864 + $this->faker->numberBetween(0, 100) / 10000.0,
             // 'coordinate_longitude' => 121.26661838261842 + $this->faker->randomFloat(0.001, 0, 1.0),
             // 'coordinate_latitude' => 31.111403203411864 + $this->faker->randomFloat(0.001, 0, 1.0),
-            'coordinate_altitude' => 500 + $this->faker->numberBetween(0, 100) / 1000.0
+            // 'coordinate_altitude' => 500 + $this->faker->numberBetween(0, 100) / 1000.0
+            'coordinate_altitude' => 500.001
         ];
     }
 }
