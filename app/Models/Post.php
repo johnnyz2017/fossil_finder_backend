@@ -80,9 +80,11 @@ class Post extends Model
         // return $newdata;
     }
 
-    // public function toArrayTest()
-    // {
-    //     $data = parent::toArray();
-    //     return $data;
-    // }
+    public function toArrayTest()
+    {
+        $data = parent::toArray();
+        $data['label'] = $data['title'];
+        $data['key'] = (string)$data['id'];
+        return $data;
+    }
 }

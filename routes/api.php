@@ -44,8 +44,9 @@ Route::get('v1/posts/{id}', [PostController::class, 'show']);
 Route::get('v1/posts/{id}/category', [PostController::class, 'category']);
 Route::get('v1/posts/{id}/user', [PostController::class, 'user']);
 
-Route::get('v1/category/{id}/childs', [CategoryController::class, 'childs']);
-Route::get('v1/category/posts', [CategoryController::class, 'posts']);
+Route::get('v1/categories/{id}/childs', [CategoryController::class, 'childs']);
+Route::get('v1/categories/posts', [CategoryController::class, 'posts']);
+Route::get('v1/categories/hi', [CategoryController::class, 'hi']);
 
 Route::get('v1/categories', function () {
     $category = Category::with('childs')->get();

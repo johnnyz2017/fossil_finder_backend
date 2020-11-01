@@ -35,8 +35,11 @@ class PostFactory extends Factory
         return [
             'user_id' => $users->random(),
             'auth_user_id' => 1,
-            'temp_id' => $this->faker->numberBetween(10000, 11000),
-            'perm_id' => $this->faker->numberBetween(20000, 21000),
+
+            'temp_id' => $this->faker->uuid,
+            'perm_id' => $this->faker->uuid,
+            // 'temp_id' => $this->faker->numberBetween(10000, 11000),
+            // 'perm_id' => $this->faker->numberBetween(20000, 21000),
             'address' => $this->faker->address,
             // 'title' => $this->faker->sentence(5),
             'title' => 'Title of'.$this->faker->word(),

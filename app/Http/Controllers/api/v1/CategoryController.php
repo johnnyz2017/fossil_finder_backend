@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -54,5 +55,36 @@ class CategoryController extends Controller
             "statusCode" => 200,
             "data" => json_encode($all_categories)
         ]);
+    }
+
+    public function hi(){
+        // $data = DB::table('categories')->select()->where('parent_id', '=', '0')->get();
+        // $data = Category::where('parent_id', '=', '0')->firstOrFail();
+        // $data = Category::where('parent_id', '=', '0')->value();
+        $root = Category::find(0);
+        // dd($root);
+        if($root->count() == 0){
+            return response()->json([
+                "statusCode" => 404,
+                'mesage' => 'no data found',
+                "data" => json_encode($root)
+            ], 400);
+        }
+
+        // $ndata = [];
+        // for($i = 0; $i < $data->count(); $i ++){
+        //     $d = $data[$i];
+        //     // $d['children'] = [];
+        //     array_push($ndata, $d);
+        // }
+
+        $ch = $root->toArray();
+        // dd($array['children']);
+
+        return $ch;
+        // return response()->json([
+        //     "statusCode" => 200,
+        //     "data" => $ch
+        // ]);
     }
 }

@@ -19,57 +19,44 @@ class PostController extends Controller
         // $posts = DB::table('posts')->paginate(5); //no customized data
         // $posts = Post::paginate(10);
 
-
-        // dd($posts['data']);
-        // foreach($posts as $post){
-        //     $post = $post->allToArray();
-        // }
-
         return response()->json(
             [
                 "statusCode" => 200,
                 'paginated' => false,
                 'mesage' => 'success to get posts',
                 "data" => $posts->toArray()
-                // "data" => $posts
-            ]
+            ],
+            200
         );
     }
 
     public function category ($id) {
-        // return response()->json(
-        //     [
-        //         "statusCode" => 200,
-        //         'mesage' => 'success to get posts',
-        //         "data" => 'test'
-        //     ]
-        // );
-
         $post = \App\Models\Post::find($id);
-        // dd($post);
+        
         if($post == null){
-            response()->json([
+            return response()->json([
                 'success' => false,
                 'message' => 'Post not found '
             ], 404);
         }
 
-        // return response()->json([
-        //     'success' => true,
-        //     "data" => $post->toArray()
-        // ], 200);
-
         $category = $post->category;
-        // dd($category);
         if(!$category){
-            response()->json([
+            return response()->json([
                 'success' => false,
                 'message' => 'Category not found '
             ], 404);
         }
+        // while($category->parent != null){
+        //     $p = $category->parent;
+        //     $p['child'] = $category;
+        //     dd($p);
+        //     $category = $p;
+        // }
+
         return response()->json([
             'success' => true,
-            "data" => $category->toArray()
+            "data" => $category->toWithAllParentsArray()
         ], 200);
     }
 
@@ -126,7 +113,6 @@ class PostController extends Controller
     // public function index()
     // {
     //     $posts = auth()->user()->posts;
- 
     //     return response()->json([
     //         'success' => true,
     //         'data' => $posts
@@ -151,28 +137,29 @@ class PostController extends Controller
         ], 200);
     }
  
-    // public function store(Request $request)
-    // {
-    //     $this->validate($request, [
-    //         'title' => 'required',
-    //         'description' => 'required'
-    //     ]);
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required'
+        ]);
  
-    //     $post = new Post();
-    //     $post->title = $request->title;
-    //     $post->description = $request->description;
+        $post = new Post();
+        $post->title = $request->title;
+        $post->description = $request->description;
+
  
-    //     if (auth()->user()->posts->save($post))
-    //         return response()->json([
-    //             'success' => true,
-    //             'data' => $post->toArray()
-    //         ]);
-    //     else
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Post not added'
-    //         ], 500);
-    // }
+        if (auth()->user()->posts->save($post))
+            return response()->json([
+                'success' => true,
+                'data' => $post->toArray()
+            ]);
+        else
+            return response()->json([
+                'success' => false,
+                'message' => 'Post not added'
+            ], 500);
+    }
  
     // public function update(Request $request, $id)
     // {

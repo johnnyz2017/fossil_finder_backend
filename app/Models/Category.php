@@ -31,23 +31,54 @@ class Category extends Model
         return $this->hasMany(Post::class, 'final_category_id', 'id');
     }
 
+    public function toWithAllParentsArray(){
+        $data = parent::toArray();
+
+        if($this->parent){
+            $data['parent'] = $this->parent->toWithAllParentsArray();
+        }else{
+            $data['prarent'] = null;
+        }
+
+        return $data;
+    }
+
+    public function toOrigArray(){
+        $data = parent::toArray();
+        return $data;
+    }
+
     public function toArray()
     {
         $data = parent::toArray();
 
         // if($this->posts){
-        //     $data['posts'] = $this->posts->toArray();
+        //     // $data['posts'] = $this->posts->toArray();
+        //     $data['posts'] = $this->posts->map(function($post){
+        //         return $post->toArrayTest();
+        //     });
         // }else{
         //     $data['posts'] = null;
         // }
 
-        // if($this->childs){
-        //     $children = [];
-        //     foreach($this->childs as $child){
-        //         array_push($children, $child->toArray());
-        //     }
-        //     $data['children'] = $children;
-        // }
+        $data['key'] = (string)$data['id'];
+        $date['label'] = $data['title'];
+
+        $children = [];
+        if($this->childs){
+            foreach($this->childs as $child){
+                array_push($children, $child->toArray());
+            }
+        }
+
+        if($this->posts){
+            $post = $this->posts->map(function($post){
+                return $post->toArrayTest();
+            });
+            array_push($children, $post);
+        }
+
+        $data['children'] = $children;
 
         // if($this->parent){
         //     $data['parent'] = $this->parent;

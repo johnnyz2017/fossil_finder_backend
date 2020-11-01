@@ -22,8 +22,8 @@ class CreatePostsTable extends Migration
             $table->bigInteger('auth_user_id')->unsigned()->nullable(); //最后审核用户？
             $table->foreign('auth_user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             
-            $table->integer('temp_id')->unsigned();
-            $table->integer('perm_id')->unsigned()->nullable();
+            $table->string('temp_id');
+            $table->string('perm_id')->nullable();
             $table->string('title');
             $table->longText('content');
             $table->boolean('private')->default(false); //个人设置，是否私有
