@@ -40,6 +40,7 @@ Route::get('v1/test', [LoginController::class, 'test'])->middleware('auth:api');
 // Route::apiResource('v1/posts', PostController::class); //OK
 Route::get('v1/posts', [PostController::class, 'index']);
 Route::get('v1/posts/{id}', [PostController::class, 'show']);
+Route::post('v1/posts', [PostController::class, 'store']);
 
 Route::get('v1/posts/{id}/category', [PostController::class, 'category']);
 Route::get('v1/posts/{id}/user', [PostController::class, 'user']);

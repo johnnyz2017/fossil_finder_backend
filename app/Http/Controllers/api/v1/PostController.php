@@ -139,26 +139,44 @@ class PostController extends Controller
  
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $data = $this->validate($request, [
             'title' => 'required',
-            'description' => 'required'
+            'content' => 'required',
+            'images' => 'required',
+            'coordinate_latitude' => 'required',
+            'coordinate_longitude' => 'required',
+            'coordinate_altitude' => 'required',
+            'address' => 'required',
+            'category_id' => 'required'
         ]);
- 
-        $post = new Post();
-        $post->title = $request->title;
-        $post->description = $request->description;
+
+        $data['temp_id'] = uniqid();
+        // $data['category_id'] = 2;
+        $data['user_id'] = 1;
+
+        
+        // $post = new Post();
+        // $post->title = $request->title;
+        // $post->description = $request->description;
+
+        Post::create($data);
+
+        return response()->json([
+            'message' => 'OK',
+            'statusCode' => 200
+        ], 200);
 
  
-        if (auth()->user()->posts->save($post))
-            return response()->json([
-                'success' => true,
-                'data' => $post->toArray()
-            ]);
-        else
-            return response()->json([
-                'success' => false,
-                'message' => 'Post not added'
-            ], 500);
+        // if (auth()->user()->posts->save($post))
+        //     return response()->json([
+        //         'success' => true,
+        //         'data' => $post->toArray()
+        //     ]);
+        // else
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Post not added'
+        //     ], 500);
     }
  
     // public function update(Request $request, $id)
