@@ -62,6 +62,13 @@ class CategoryController extends Controller
         // $data = Category::where('parent_id', '=', '0')->firstOrFail();
         // $data = Category::where('parent_id', '=', '0')->value();
         $root = Category::find(0);
+        if($root == null){
+            return response()->json([
+                "statusCode" => 404,
+                'mesage' => 'no data found',
+                "data" => ''
+            ], 404);
+        }
         // dd($root);
         if($root->count() == 0){
             return response()->json([
@@ -79,9 +86,25 @@ class CategoryController extends Controller
         // }
 
         $ch = $root->toArray();
+        // $ch = $root->toOrigArray();
         // dd($array['children']);
 
-        return $ch;
+        // dd($root->childs);
+
+        // $ndata = [];
+        // for($i = 0; $i < $root->childs->count(); $i++){
+        //     $d = $root->childs[$i];
+        //     // $d['children'] = [];
+        //     array_push($ndata, $d);
+        // }
+
+        // $root['children'] = $ndata;
+
+        return response()->json(
+            [
+                $ch
+            ]
+        );
         // return response()->json([
         //     "statusCode" => 200,
         //     "data" => $ch

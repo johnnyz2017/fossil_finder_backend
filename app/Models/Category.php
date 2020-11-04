@@ -45,6 +45,15 @@ class Category extends Model
 
     public function toOrigArray(){
         $data = parent::toArray();
+
+        // dd($this->childs);// 4 5
+
+        $children = [];
+        if($this->childs){
+            foreach($this->childs as $child){
+                array_push($children, $child->toOrigArray());
+            }
+        }
         return $data;
     }
 
@@ -61,8 +70,8 @@ class Category extends Model
         //     $data['posts'] = null;
         // }
 
-        $data['key'] = (string)$data['id'];
-        $date['label'] = $data['title'];
+        // $data['key'] = (string)$data['id'];
+        // $date['label'] = $data['title'];
 
         $children = [];
         if($this->childs){
@@ -71,12 +80,15 @@ class Category extends Model
             }
         }
 
-        if($this->posts){
-            $post = $this->posts->map(function($post){
-                return $post->toArrayTest();
-            });
-            array_push($children, $post);
-        }
+        // if($this->posts){
+        //     $post = $this->posts->map(function($post){
+        //         return $post->toArrayTest();
+        //     });
+        //     array_push($children, $post);
+        // }
+
+        $data['label'] = $this->title;
+        $data['key'] = (string)$this->id;
 
         $data['children'] = $children;
 
