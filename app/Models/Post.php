@@ -83,8 +83,8 @@ class Post extends Model
     public function toArrayTest()
     {
         $data = parent::toArray();
-        $data['label'] = $data['title'];
-        $data['key'] = (string)$data['id'];
+        $data['label'] = $this->title;
+        $data['key'] = "p_".(string)$this->id;
         return $data;
     }
 }

@@ -80,15 +80,18 @@ class Category extends Model
             }
         }
 
-        // if($this->posts){
-        //     $post = $this->posts->map(function($post){
-        //         return $post->toArrayTest();
-        //     });
-        //     array_push($children, $post);
-        // }
+        if($this->posts){
+            // $post = $this->posts->map(function($post){
+            //     return $post->toArrayTest();
+            // });
+            // array_push($children, $post);
+            foreach($this->posts as $post){
+                array_push($children, $post->toArrayTest());
+            }
+        }
 
         $data['label'] = $this->title;
-        $data['key'] = (string)$this->id;
+        $data['key'] = "c_".(string)$this->id;
 
         $data['children'] = $children;
 
