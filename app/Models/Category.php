@@ -43,61 +43,50 @@ class Category extends Model
         return $data;
     }
 
-    public function toOrigArray(){
-        $data = parent::toArray();
-
-        // dd($this->childs);// 4 5
-
-        $children = [];
-        if($this->childs){
-            foreach($this->childs as $child){
-                array_push($children, $child->toOrigArray());
-            }
-        }
-        return $data;
-    }
-
     public function toArray()
     {
         $data = parent::toArray();
 
-        // if($this->posts){
-        //     // $data['posts'] = $this->posts->toArray();
-        //     $data['posts'] = $this->posts->map(function($post){
-        //         return $post->toArrayTest();
-        //     });
-        // }else{
-        //     $data['posts'] = null;
-        // }
+        return $data;
+    }
 
-        // $data['key'] = (string)$data['id'];
-        // $date['label'] = $data['title'];
+    public function toChildrenArray(){
+        $data = parent::toArray();
 
         $children = [];
         if($this->childs){
             foreach($this->childs as $child){
-                array_push($children, $child->toArray());
-            }
-        }
-
-        if($this->posts){
-            // $post = $this->posts->map(function($post){
-            //     return $post->toArrayTest();
-            // });
-            // array_push($children, $post);
-            foreach($this->posts as $post){
-                array_push($children, $post->toArrayTest());
+                array_push($children, $child->toChildrenArray());
             }
         }
 
         $data['label'] = $this->title;
         $data['key'] = "c_".(string)$this->id;
-
         $data['children'] = $children;
+        
+        return $data;
+    }
 
-        // if($this->parent){
-        //     $data['parent'] = $this->parent;
-        // }
+    public function toChildrenPostArray()
+    {
+        $data = parent::toArray();
+
+        $children = [];
+        if($this->childs){
+            foreach($this->childs as $child){
+                array_push($children, $child->toChildrenPostArray());
+            }
+        }
+
+        if($this->posts){
+            foreach($this->posts as $post){
+                array_push($children, $post->toOrigArray());
+            }
+        }
+
+        $data['label'] = $this->title;
+        $data['key'] = "c_".(string)$this->id;
+        $data['children'] = $children;
 
         return $data;
     }

@@ -57,8 +57,6 @@ class Post extends Model
             $data['author'] = 'unkown';
         }
 
-        $data['test'] = 'test';
-
         if($this->comments){
             $data['comments'] = $this->comments; 
         }else{
@@ -66,21 +64,9 @@ class Post extends Model
         }
 
         return $data;
-
-        //test
-        // $newdata  = array(
-        //     'id' => $this->id, 
-        //     'title' => $this->title,
-        //     'contents' => $this->content,
-        //     'author' => 'autor test',
-        //     'images' => [],
-        //     'comments' => []
-        // );
-
-        // return $newdata;
     }
 
-    public function toArrayTest()
+    public function toOrigArray()
     {
         $data = parent::toArray();
         $data['label'] = $this->title;

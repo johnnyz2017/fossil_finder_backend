@@ -85,7 +85,7 @@ class CategoryController extends Controller
         //     array_push($ndata, $d);
         // }
 
-        $ch = $root->toArray();
+        $ch = $root->toChildrenPostArray();
         // $ch = $root->toOrigArray();
         // dd($array['children']);
 
@@ -109,5 +109,60 @@ class CategoryController extends Controller
         //     "statusCode" => 200,
         //     "data" => $ch
         // ]);
+    }
+
+
+    public function allWithPosts(){
+        $root = Category::find(0);
+        if($root == null){
+            return response()->json([
+                "statusCode" => 404,
+                'mesage' => 'no data found',
+                "data" => ''
+            ], 404);
+        }
+
+        if($root->count() == 0){
+            return response()->json([
+                "statusCode" => 404,
+                'mesage' => 'no data found',
+                "data" => json_encode($root)
+            ], 400);
+        }
+
+        $ch = $root->toChildrenPostArray();
+
+        return response()->json([
+            "statusCode" => 200,
+            'mesage' => 'no data found',
+            "data" => $ch
+        ], 200);
+    }
+
+    public function allWithoutPosts(){
+        $root = Category::find(0);
+        if($root == null){
+            return response()->json([
+                "statusCode" => 404,
+                'mesage' => 'no data found',
+                "data" => ''
+            ], 404);
+        }
+
+        if($root->count() == 0){
+            return response()->json([
+                "statusCode" => 404,
+                'mesage' => 'no data found',
+                "data" => json_encode($root)
+            ], 400);
+        }
+
+        $ch = $root->toChildrenArray();
+
+        return response()->json([
+            "statusCode" => 200,
+            'mesage' => 'no data found',
+            "data" => $ch
+        ], 200);
     }
 }
