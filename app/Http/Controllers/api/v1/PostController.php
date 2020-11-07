@@ -163,7 +163,7 @@ class PostController extends Controller
 
         return response()->json([
             'message' => 'OK',
-            'statusCode' => 200
+            'code' => 200
         ], 200);
 
  

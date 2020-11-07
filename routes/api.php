@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\v1\CategoryController;
+use App\Http\Controllers\api\v1\CommentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -59,6 +60,9 @@ Route::get('v1/categories', function () {
 
     return $category->toArray();
 });
+
+Route::post('v1/comments', [CommentController::class, 'store']);
+Route::get('v1/comments/{id}', [CommentController::class, 'show']);
 
 Route::get('v1/users/{id}', [UserController::class, 'show']);
 Route::get('v1/users', [UserController::class, 'index']);
