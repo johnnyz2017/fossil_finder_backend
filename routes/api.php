@@ -39,9 +39,9 @@ Route::post('v1/login', [LoginController::class, 'login']);
 Route::get('v1/test', [LoginController::class, 'test'])->middleware('auth:api');
 
 // Route::apiResource('v1/posts', PostController::class); //OK
-Route::get('v1/posts', [PostController::class, 'index']);
-Route::get('v1/posts/{id}', [PostController::class, 'show']);
-Route::post('v1/posts', [PostController::class, 'store']);
+Route::get('v1/posts', [PostController::class, 'index'])->middleware('auth:api');
+Route::get('v1/posts/{id}', [PostController::class, 'show'])->middleware('auth:api');
+Route::post('v1/posts', [PostController::class, 'store'])->middleware('auth:api');
 
 Route::get('v1/posts/{id}/category', [PostController::class, 'category']);
 Route::get('v1/posts/{id}/user', [PostController::class, 'user']);
@@ -61,8 +61,8 @@ Route::get('v1/categories', function () {
     return $category->toArray();
 });
 
-Route::post('v1/comments', [CommentController::class, 'store']);
-Route::get('v1/comments/{id}', [CommentController::class, 'show']);
+Route::post('v1/comments', [CommentController::class, 'store'])->middleware('auth:api');
+Route::get('v1/comments/{id}', [CommentController::class, 'show'])->middleware('auth:api');
 
 Route::get('v1/users/{id}', [UserController::class, 'show']);
 Route::get('v1/users', [UserController::class, 'index']);
