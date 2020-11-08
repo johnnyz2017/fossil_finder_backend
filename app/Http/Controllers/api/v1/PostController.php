@@ -160,6 +160,7 @@ class PostController extends Controller
         $data['temp_id'] = uniqid();
         // $data['category_id'] = 2;
         $data['user_id'] = $user->id;
+        // $data['private'] = true;
 
         
         // $post = new Post();

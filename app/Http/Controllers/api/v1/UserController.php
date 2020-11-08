@@ -23,11 +23,26 @@ class UserController extends Controller
         ]);
     }
 
-    public function posts(){
-        return $this->hasMany(Post::class);
+    public function postsviaauth(){
+        // return $this->hasMany(Post::class);
+        $user = auth()->user();
+        // dd($user);
+        if($user == null)
+            return response()->json([
+                'message' => 'Failed to find user',
+                'code' => 401
+            ], 401);
+        
+        $posts = $user->posts;
+        // dd($posts);
+        // dd($posts);
+        return response()->json([
+            "code" => 200,
+            "data" => $posts->toArray()
+        ], 200);
     }
 
-    public function post($id){
+    public function posts($id){
         $user = User::find($id);
         if($user == null){
             return response()->json([

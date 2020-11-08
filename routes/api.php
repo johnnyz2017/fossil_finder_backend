@@ -66,6 +66,7 @@ Route::get('v1/comments/{id}', [CommentController::class, 'show'])->middleware('
 
 Route::get('v1/users/{id}', [UserController::class, 'show']);
 Route::get('v1/users', [UserController::class, 'index']);
+Route::get('v1/postsown', [UserController::class, 'postsviaauth'])->middleware('auth:api');
 //test
 // Route::get('v1/users', function () {
 //     // $user->hasRole('owner');   // false
