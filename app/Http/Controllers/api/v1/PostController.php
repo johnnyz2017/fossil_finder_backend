@@ -5,7 +5,6 @@ namespace App\Http\Controllers\api\v1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-// use App\Models\User;
 use App\Models\Post;
 use Illuminate\Support\Facades\DB;
 
@@ -15,13 +14,17 @@ class PostController extends Controller
     //GET /post
     public function index(){
 
-        $posts = Post::all(); //no pagination
+        // $posts = Post::all(); //no pagination
         // $posts = DB::table('posts')->paginate(5); //no customized data
         // $posts = Post::paginate(10);
 
+        //filter
+        //$posts = Post::query()->where('private', false)->where('published', true)->orderBy('created_at', 'DESC')->paginate(5); //ASC paginated
+        $posts = Post::query()->where('private', false)->where('published', true)->orderBy('created_at', 'DESC')->get(); //no paginated
+
         return response()->json(
             [
-                "statusCode" => 200,
+                "code" => 200,
                 'paginated' => false,
                 'mesage' => 'success to get posts',
                 "data" => $posts->toArray()
@@ -35,27 +38,25 @@ class PostController extends Controller
         
         if($post == null){
             return response()->json([
+                'code' => 404,
                 'success' => false,
-                'message' => 'Post not found '
+                'message' => 'Post not found'
             ], 404);
         }
 
         $category = $post->category;
         if(!$category){
             return response()->json([
+                'code' => 404,
                 'success' => false,
-                'message' => 'Category not found '
+                'message' => 'Category not found'
             ], 404);
         }
-        // while($category->parent != null){
-        //     $p = $category->parent;
-        //     $p['child'] = $category;
-        //     dd($p);
-        //     $category = $p;
-        // }
 
         return response()->json([
+            'code' => 200,
             'success' => true,
+            'message' => 'OK',
             "data" => $category->toWithAllParentsArray()
         ], 200);
     }
@@ -64,15 +65,17 @@ class PostController extends Controller
         $post = \App\Models\Post::find($id);
         if(!$post){
             return response()->json([
-                "statusCode" => 404,
+                "code" => 404,
+                'message' => 'comment not found',
                 "data" => $post->toArray()
-            ]);
+            ], 404);
         }
         $comment = $post->comments;
         return response()->json([
-            "statusCode" => 200,
+            "code" => 200,
+            'message' => 'OK',
             "data" => $comment->toArray()
-        ]);
+        ], 200);
     }
     
     public function storeImage(Request $req){
@@ -80,59 +83,54 @@ class PostController extends Controller
         $input = $req->all();
         $final_path = '';
 
-        // if($req->hasFile('image')){
-        //     // echo 'found image file in the request <br>';
+        if($req->hasFile('image')){
+            $dest_path = 'public/images/posts';
+            $access_path = '/storage/images/posts/';
+            $image = $req->file('image');
+            $image_name = $image->getClientOriginalName();
 
-        //     $dest_path = 'public/images/posts';
-        //     $access_path = '/storage/images/posts/';
-        //     $image = $req->file('image');
-        //     $image_name = $image->getClientOriginalName();
+            echo 'try to create file: ',$image_name; //QQ20200704-2.jpg
+            $path = $req->file('image')->storeAs($dest_path, $image_name);
 
-        //     echo 'try to create file: ',$image_name; //QQ20200704-2.jpg
-        //     $path = $req->file('image')->storeAs($dest_path, $image_name);
-
-        //     //echo $path; //public/images/posts/QQ20200704-2.jpg //ERROR to access
-        //     //echo ' : ',$access_path,'/',$image_name; //RIGHT to access
-        //     $final_path = $access_path.$image_name;
-        //     // echo url()->current();
-        //     // echo url($final_path);
-
-        //     // $input['image'] = $image_name; //use image_name
-        //     // '/storage/images/posts'
-        // }
+            $final_path = $access_path.$image_name;
+        }
 
         return response()->json([
-            'statusCode' => 200,
+            'code' => 200,
             'mesage' => 'success to store image',
             'image_url' => url($final_path)
         ], 200);
 
     }
-
-    //^^
-    // public function index()
-    // {
-    //     $posts = auth()->user()->posts;
-    //     return response()->json([
-    //         'success' => true,
-    //         'data' => $posts
-    //     ]);
-    // }
  
     public function show($id)
     {
-        // $post = auth()->user()->posts->find($id);
         $post = Post::find($id);
  
         if (!$post) {
             return response()->json([
+                'code' => 400,
                 'success' => false,
                 'message' => 'Post not found '
             ], 400);
         }
+
+        $user = auth()->user();
+        // dd($user);
+        if($post->private == 1 || $post->published == 0){
+            if($post->user_id != $user->id){
+                return response()->json([
+                    'code' => 302,
+                    'success' => false,
+                    'message' => 'Auth Failed'
+                ], 302);
+            }
+        }
  
         return response()->json([
+            'code' => 200,
             'success' => true,
+            'message' => 'OK',
             'data' => $post->toArray()
         ], 200);
     }
@@ -154,18 +152,12 @@ class PostController extends Controller
             'coordinate_longitude' => 'required',
             'coordinate_altitude' => 'required',
             'address' => 'required',
-            'category_id' => 'required'
+            'category_id' => 'required',
+            'private' => 'required'
         ]);
 
         $data['temp_id'] = uniqid();
-        // $data['category_id'] = 2;
         $data['user_id'] = $user->id;
-        // $data['private'] = true;
-
-        
-        // $post = new Post();
-        // $post->title = $request->title;
-        // $post->description = $request->description;
 
         Post::create($data);
 
@@ -173,18 +165,6 @@ class PostController extends Controller
             'message' => 'OK',
             'code' => 200
         ], 200);
-
- 
-        // if (auth()->user()->posts->save($post))
-        //     return response()->json([
-        //         'success' => true,
-        //         'data' => $post->toArray()
-        //     ]);
-        // else
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => 'Post not added'
-        //     ], 500);
     }
  
     // public function update(Request $request, $id)

@@ -30,12 +30,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 //OK
 Route::post('v1/register', [LoginController::class, 'register']);
-// Route::post('v1/register', function(Request $request){
-//     return response()->json([
-//         'statusCode' => 300
-//     ]);
-// });
 Route::post('v1/login', [LoginController::class, 'login']);
+
 Route::get('v1/test', [LoginController::class, 'test'])->middleware('auth:api');
 
 // Route::apiResource('v1/posts', PostController::class); //OK
@@ -54,19 +50,24 @@ Route::get('v1/categories/allwithoutposts', [CategoryController::class, 'allWith
 Route::get('v1/categories', [CategoryController::class, 'index']);
 Route::get('v1/categories/{id}', [CategoryController::class, 'show']);
 
-Route::get('v1/categories', function () {
-    $category = Category::with('childs')->get();
-    // dd($category);
+// Route::get('v1/categories', function () {
+//     $category = Category::with('childs')->get();
 
-    return $category->toArray();
-});
+//     return $category->toArray();
+// });
 
 Route::post('v1/comments', [CommentController::class, 'store'])->middleware('auth:api');
 Route::get('v1/comments/{id}', [CommentController::class, 'show'])->middleware('auth:api');
 
 Route::get('v1/users/{id}', [UserController::class, 'show']);
 Route::get('v1/users', [UserController::class, 'index']);
+Route::get('v1/self', [UserController::class, 'self'])->middleware('auth:api');
 Route::get('v1/postsown', [UserController::class, 'postsviaauth'])->middleware('auth:api');
+
+
+
+
+
 //test
 // Route::get('v1/users', function () {
 //     // $user->hasRole('owner');   // false

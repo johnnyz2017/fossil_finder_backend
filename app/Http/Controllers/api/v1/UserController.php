@@ -14,13 +14,32 @@ class UserController extends Controller
         return $users->toArray();
     }
 
+    public function self(){
+        $auser = auth()->user();
+        $user = User::find($auser->id);
+
+        if($user == null){
+            return response()->json([
+                'message' => 'Failed to find user',
+                'code' => 401
+            ], 401);
+        }
+
+        return response()->json([
+            "code" => 200,
+            "data" => $user->toArray(),
+            'message' => 'OK'
+        ], 200);
+    }
+
     public function show($id){
         $user = User::find($id);
 
         return response()->json([
-            "statusCode" => 200,
-            "data" => $user->toArray()
-        ]);
+            "code" => 200,
+            "data" => $user->toArray(),
+            'message' => 'OK'
+        ], 200);
     }
 
     public function postsviaauth(){

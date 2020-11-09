@@ -80,7 +80,8 @@ class Category extends Model
 
         if($this->posts){
             foreach($this->posts as $post){
-                array_push($children, $post->toOrigArray());
+                if($post->published == true && $post->private == false)
+                    array_push($children, $post->toOrigArray());
             }
         }
 

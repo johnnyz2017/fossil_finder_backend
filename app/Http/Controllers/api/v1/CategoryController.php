@@ -134,7 +134,7 @@ class CategoryController extends Controller
 
         return response()->json([
             "statusCode" => 200,
-            'mesage' => 'no data found',
+            'mesage' => 'query successfully',
             "data" => $ch
         ], 200);
     }
@@ -161,7 +161,7 @@ class CategoryController extends Controller
 
         return response()->json([
             "statusCode" => 200,
-            'mesage' => 'no data found',
+            'mesage' => 'query successfully',
             "data" => $ch
         ], 200);
     }
