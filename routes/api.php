@@ -64,6 +64,9 @@ Route::get('v1/users', [UserController::class, 'index']);
 Route::get('v1/self', [UserController::class, 'self'])->middleware('auth:api');
 Route::get('v1/postsown', [UserController::class, 'postsviaauth'])->middleware('auth:api');
 
+Route::get('v1/publishedposts', [PostController::class, 'publishedPostsViaAuth'])->middleware('auth:api');
+Route::get('v1/unpublishedposts', [PostController::class, 'unpublishedPostsViaAuth'])->middleware('auth:api');
+Route::get('v1/privateposts', [PostController::class, 'privatePostsViaAuth'])->middleware('auth:api');
 
 
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
@@ -33,6 +34,46 @@ class PostController extends Controller
         );
     }
 
+    public function publishedPostsViaAuth(){
+        $auser = auth()->user();
+        $posts = Post::query()->where('user_id', '=', $auser->id)->where('published', true)->get();
+
+        return response()->json([
+            'code' => 200,
+            'paginated' => false,
+            'success' => true,
+            'message' => 'OK',
+            "data" => $posts->toArray()
+        ], 200);
+
+    }
+
+    public function unpublishedPostsViaAuth(){
+        $auser = auth()->user();
+        $posts = Post::query()->where('user_id', '=', $auser->id)->where('published', false)->get();
+
+        return response()->json([
+            'code' => 200,
+            'paginated' => false,
+            'success' => true,
+            'message' => 'OK',
+            "data" => $posts->toArray()
+        ], 200);
+    }
+
+    public function privatePostsViaAuth(){
+        $auser = auth()->user();
+        $posts = Post::query()->where('user_id', '=', $auser->id)->where('private', true)->get();
+
+        return response()->json([
+            'code' => 200,
+            'paginated' => false,
+            'success' => true,
+            'message' => 'OK',
+            "data" => $posts->toArray()
+        ], 200);
+    }
+
     public function category ($id) {
         $post = \App\Models\Post::find($id);
         
@@ -40,7 +81,8 @@ class PostController extends Controller
             return response()->json([
                 'code' => 404,
                 'success' => false,
-                'message' => 'Post not found'
+                'message' => 'Post not found',
+                'data' => []
             ], 404);
         }
 
@@ -49,7 +91,8 @@ class PostController extends Controller
             return response()->json([
                 'code' => 404,
                 'success' => false,
-                'message' => 'Category not found'
+                'message' => 'Category not found',
+                'data' => []
             ], 404);
         }
 

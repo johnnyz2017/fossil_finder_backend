@@ -14,6 +14,15 @@ class UserController extends Controller
         return $users->toArray();
     }
 
+    // public function publicPostsViaAuth(){
+    //     $auser = auth()->user();
+    //     $user = User::find($auser->id);
+    // }
+
+    // public function privatePostsViaAuth(){
+    //     $auser = auth()->user();
+    // }
+
     public function self(){
         $auser = auth()->user();
         $user = User::find($auser->id);
