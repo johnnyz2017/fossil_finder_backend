@@ -21,7 +21,12 @@ class MenuController extends Controller
 
         $input = $request->all();
         $input['parent_id'] = empty($input['parent_id']) ? 0 : $input['parent_id'];
-        Category::create($input);
+        // dd($input);
+        // Category::create($input);
+        Category::create([
+            'title' => $input['title'],
+            'parent_id' => $input['parent_id']
+        ]);
         return back()->with('success', 'Menu added successfully.');
     }
 
