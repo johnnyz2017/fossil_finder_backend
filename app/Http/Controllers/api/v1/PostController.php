@@ -209,6 +209,44 @@ class PostController extends Controller
             'code' => 200
         ], 200);
     }
+
+    public function update(Request $request, $id){
+        $user = auth()->user();
+        if($user == null)
+            return response()->json([
+                'message' => 'Failed to find user',
+                'code' => 401
+            ], 401);
+
+        $post = Post::find($id);
+        if($post->user_id != $user->id){
+            return response()->json([
+                'message' => 'Not the owner or admin',
+                'code' => 401
+            ], 401);
+        }
+
+        $data = $this->validate($request, [
+            'title' => 'required',
+            'content' => 'required',
+            'images' => 'required',
+            'coordinate_latitude' => 'required',
+            'coordinate_longitude' => 'required',
+            'coordinate_altitude' => 'required',
+            'address' => 'required',
+            'category_id' => 'required',
+            'private' => 'required'
+        ]);
+
+        // $data['private'] = (int)$data['private']; //ERROR false/true => 0
+
+        $post->update($data);
+
+        return response()->json([
+            'code' => 200,
+            'message' => 'OK'
+        ], 200);
+    }
  
     // public function update(Request $request, $id)
     // {

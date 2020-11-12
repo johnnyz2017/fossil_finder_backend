@@ -10,11 +10,12 @@ use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
-    public function test(){
+    public function testauth(){
         return response()->json(
             [
-                'test' => 'hello'
-            ]
+                'code' => 200,
+                'message' => 'OK'
+            ], 200
         );
     }
     //
@@ -33,16 +34,7 @@ class LoginController extends Controller
         // }
 
         $input = $request->all();
-        // dd($input);
         $input['password'] = bcrypt($input['password']);
-        //$2y$10$7zEYkavlqyESRq1P19Yw8.NfrDCxck9CfwZe892Xhvyq3t2cg2aaK
-        //$2y$10$.RrLrneC3hwA6DZB2MIYguS3PMr5BmeC8IlpqPeL1L.D0IRohUaSe
-        //12345678
-
-        //password
-        //
-        // dd($input);
-        // echo $input;
 
         $user = User::create($input);
         // $user = User::create([
@@ -59,6 +51,7 @@ class LoginController extends Controller
         return response()->json(
             [
                 'statusCode' => 200,
+                'message' => 'OK',
                 'data' => $user,
                 'token' => $token->accessToken
             ]

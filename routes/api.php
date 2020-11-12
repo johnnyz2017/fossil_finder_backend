@@ -32,12 +32,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('v1/register', [LoginController::class, 'register']);
 Route::post('v1/login', [LoginController::class, 'login']);
 
-Route::get('v1/test', [LoginController::class, 'test'])->middleware('auth:api');
+Route::get('v1/testauth', [LoginController::class, 'testauth'])->middleware('auth:api');
 
 // Route::apiResource('v1/posts', PostController::class); //OK
 Route::get('v1/posts', [PostController::class, 'index'])->middleware('auth:api');
 Route::get('v1/posts/{id}', [PostController::class, 'show'])->middleware('auth:api');
 Route::post('v1/posts', [PostController::class, 'store'])->middleware('auth:api');
+Route::post('v1/posts/{id}', [PostController::class, 'update'])->middleware('auth:api');
 
 Route::get('v1/posts/{id}/category', [PostController::class, 'category']);
 Route::get('v1/posts/{id}/user', [PostController::class, 'user']);
