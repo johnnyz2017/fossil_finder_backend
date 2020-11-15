@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.3",
         "bheller/images-generator": "^1.0",
+        "encore/laravel-admin": "^1.8",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "fzaninotto/faker": "^1.9.1",
