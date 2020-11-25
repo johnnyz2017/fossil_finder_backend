@@ -37,8 +37,8 @@ class PostController extends AdminController
         $grid->column('published', __('Published'));
         $grid->column('images', __('Images'));
         $grid->column('category_id', __('Category id'));
-        $grid->column('final_category_id', __('Final category id'));
-        $grid->column('final_category_id_from', __('Final category id from'));
+        // $grid->column('final_category_id', __('Final category id'));
+        // $grid->column('final_category_id_from', __('Final category id from'));
         $grid->column('coordinate_longitude', __('Longitude'));
         $grid->column('coordinate_latitude', __('Latitude'));
         $grid->column('coordinate_altitude', __('Altitude'));

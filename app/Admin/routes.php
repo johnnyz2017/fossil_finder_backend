@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Routing\Router;
-use App\Admin\Controllers\UserController;
+// use App\Admin\Controllers\UserController;
 
 Admin::routes();
 
@@ -14,9 +14,9 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('home');
 
-    // $router->resource('users', UserController::class);
+    $router->resource('usersmanager', UserController::class);
 
-    $router->resource('posts', PostController::class);
+    $router->resource('postsmanager', PostController::class);
 
 });
 
