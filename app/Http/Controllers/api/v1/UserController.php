@@ -101,4 +101,75 @@ class UserController extends Controller
             "data" => json_encode($comments)
         ]);
     }
+
+    public function update(Request $request, $id){
+        $user = auth()->user();
+        if($user == null)
+            return response()->json([
+                'message' => 'Failed to find user',
+                'code' => 401
+            ], 401);
+
+        $muser = User::find($user->id);
+
+        $data = $this->validate($request, [
+            'name' => 'min:3 | max:50',
+            // 'email' => 'required',
+            // 'password' => 'min:6',
+            'profile_image' => ''
+        ]);
+
+        if (request()->has('name')) {
+            if(request('name') != '')
+                $muser->name = request('name');
+        }
+
+        // if (request()->has('email')) {
+        //     $muser->name = request('email');
+        // }
+
+        if (request()->has('password')) {
+            if(request('password'))
+            $muser->password = bcrypt(request('password'));
+        }
+
+        if (request()->has('profile_image')) {
+            $muser->profile_image = request('profile_image');
+        }
+
+        // $muser->update($data);
+        $muser->save();
+
+        return response()->json([
+            'code' => 200,
+            'message' => 'OK'
+        ], 200);
+    }
+
+    public function changePassword(Request $request){
+        $user = auth()->user();
+        if($user == null)
+            return response()->json([
+                'message' => 'Failed to find user',
+                'code' => 401
+            ], 401);
+
+        $muser = User::find($user->id);
+
+        $data = $this->validate($request, [
+            'password' => 'required | min:6',
+        ]);
+
+        if (request()->has('password')) {
+            if(request('password'))
+            $muser->password = bcrypt(request('password'));
+        }
+
+        $muser->save();
+
+        return response()->json([
+            'code' => 200,
+            'message' => 'OK'
+        ], 200);
+    }
 }

@@ -191,15 +191,24 @@ class PostController extends Controller
             'title' => 'required',
             'content' => 'required',
             'images' => 'required',
+            // 'coordinate_latitude' => 'required | regex:/^[0-9]+(\.[0-9]{1,6})?$/',
+            // 'coordinate_longitude' => 'required | regex:/^[0-9]+(\.[0-9]{1,6})?$/',
+            // 'coordinate_latitude' => 'required | regex:/^[0-9]+(\.[0-9]{1,6})?$/',
+            // 'coordinate_longitude' => 'required | regex:/^[0-9]+(\.[0-9]{1,6})?$/',
+            // 'coordinate_latitude' => 'required | regex:/^\d+(\.\d+)?$/',
+            // 'coordinate_longitude' => 'required | regex:/^\d+(\.\d+)?$/',
+            // 'coordinate_latitude' => 'required | digits_between: -90, 90',
+            // 'coordinate_longitude' => 'required | digits_between: -180, 180',
+            // 'coordinate_altitude' => 'digits_between: -1000, 5000',
             'coordinate_latitude' => 'required',
             'coordinate_longitude' => 'required',
-            'coordinate_altitude' => 'required',
-            'address' => 'required',
-            'category_id' => 'required',
-            'private' => 'required'
+            'coordinate_altitude' => '',
+            'address' => '',
+            'category_id' => '',
+            'private' => ''
         ]);
 
-        $data['temp_id'] = uniqid();
+        $data['temp_id'] = uniqid(); //create tempory id
         $data['user_id'] = $user->id;
 
         Post::create($data);
@@ -230,12 +239,12 @@ class PostController extends Controller
             'title' => 'required',
             'content' => 'required',
             'images' => 'required',
-            'coordinate_latitude' => 'required',
-            'coordinate_longitude' => 'required',
-            'coordinate_altitude' => 'required',
-            'address' => 'required',
-            'category_id' => 'required',
-            'private' => 'required'
+            'coordinate_latitude' => 'required | regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'coordinate_longitude' => 'required | regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'coordinate_altitude' => 'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'address' => '',
+            'category_id' => '',
+            'private' => ''
         ]);
 
         // $data['private'] = (int)$data['private']; //ERROR false/true => 0

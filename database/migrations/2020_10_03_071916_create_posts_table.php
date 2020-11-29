@@ -26,11 +26,11 @@ class CreatePostsTable extends Migration
             $table->string('perm_id')->nullable();
             $table->string('title');
             $table->longText('content');
-            $table->boolean('private')->default(false); //个人设置，是否私有
+            $table->boolean('private')->default(true); //个人设置，是否私有
             $table->boolean('published')->default(false); //管理员审核，是否可以发布
             $table->longText('images'); //images url array
             
-            $table->bigInteger('category_id')->unsigned(); //类别
+            $table->bigInteger('category_id')->unsigned()->nullable(); //类别
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
             
             $table->bigInteger('final_category_id')->unsigned()->nullable(); //最终类别
@@ -41,8 +41,8 @@ class CreatePostsTable extends Migration
             
             $table->double('coordinate_longitude'); //经度
             $table->double('coordinate_latitude'); //纬度
-            $table->double('coordinate_altitude'); //高度 海拔
-            $table->string('address');
+            $table->double('coordinate_altitude')->nullable(); //高度 海拔
+            $table->string('address')->nullable();
             $table->timestamps();
 
         });
