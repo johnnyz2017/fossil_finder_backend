@@ -11,16 +11,69 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
-    
+    public function show($id)
+    {
+        // $user = auth()->user();
+        // if($user == null)
+        //     return response()->json([
+        //         'message' => 'Failed to auth user',
+        //         'code' => 401
+        //     ], 401);
+
+        $category = Category::find($id);
+ 
+        if (!$category) {
+            return response()->json([
+                'code' => 404,
+                'success' => false,
+                'message' => 'Category not found '
+            ], 400);
+        }
+
+        return response()->json([
+            'code' => 200,
+            'success' => true,
+            'message' => 'OK',
+            'data' => $category->toArray()
+        ], 200);
+    }
+
+    public function showPost($id)
+    {
+        // $user = auth()->user();
+        // if($user == null)
+        //     return response()->json([
+        //         'message' => 'Failed to auth user',
+        //         'code' => 401
+        //     ], 401);
+
+        $category = Category::find($id);
+ 
+        if (!$category) {
+            return response()->json([
+                'code' => 404,
+                'success' => false,
+                'message' => 'Category not found '
+            ], 400);
+        }
+
+        return response()->json([
+            'code' => 200,
+            'success' => true,
+            'message' => 'OK',
+            'paginated' => false,
+            'data' => $category->posts->toArray()
+        ], 200);
+    }
 
     public function posts(){
 
-        $user = Category::with('posts')->get();
+        $post = Category::with('posts')->get();
 
         return response()->json(
             [
                 'statusCode' => 200,
-                'data' => $user->toArray()
+                'data' => $post->toArray()
             ]
         );
 
