@@ -37,7 +37,8 @@ class CommentController extends Controller
         $data = $this->validate($request, [
             'title' => 'required',
             'content' => 'required',
-            'post_id' => 'required'
+            'post_id' => 'required',
+            'category_id' => ''
         ]);
 
         $data['user_id'] = $user->id;
