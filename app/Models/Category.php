@@ -14,6 +14,10 @@ class Category extends Model
 
     protected $hidden = ['created_at', 'updated_at'];
 
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
     public function parent(){
         return $this->belongsTo(self::class, 'parent_id', 'id');
     }

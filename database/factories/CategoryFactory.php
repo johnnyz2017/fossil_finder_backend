@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -22,10 +23,12 @@ class CategoryFactory extends Factory
      */
     public function definition()
     {
+        $users = collect(User::all()->modelKeys());
         return [
             // 'parent_id' => \App\Models\Category::all()->empty() ? 0 : \App\Models\Category::inRandomOrder()->first()->id,
             // 'parent_id' => \App\Models\Category::all()->empty() ? 0 : \App\Models\Category::all()->shuffle()->first()->id,
             'parent_id' => $this->faker->numberBetween(0, 10),
+            'user_id' => $users->random(),
             // 'name' => Str::random(10),
             // 'description' => Str::random(30)
             'title' => 'Category '.$this->faker->word(),

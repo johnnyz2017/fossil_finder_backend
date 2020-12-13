@@ -51,6 +51,7 @@ Route::get('v1/categories/allwithoutposts', [CategoryController::class, 'allWith
 Route::get('v1/categories', [CategoryController::class, 'index']);
 Route::get('v1/categories/{id}', [CategoryController::class, 'show']);
 Route::get('v1/categories/{id}/posts', [CategoryController::class, 'showPost']);
+Route::get('v1/categories/{id}/user', [CategoryController::class, 'user']);
 
 // Route::get('v1/categories', function () {
 //     $category = Category::with('childs')->get();

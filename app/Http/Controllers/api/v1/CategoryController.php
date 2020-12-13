@@ -218,4 +218,23 @@ class CategoryController extends Controller
             "data" => $ch
         ], 200);
     }
+
+    public function user($id){
+        $category = Category::find($id);
+        if($category == null){
+            return response()->json([
+                "statusCode" => 404,
+                'mesage' => 'no category found',
+                "data" => ''
+            ], 404);
+        }
+
+        $user_id = $category->user;
+        $user = User::find($user_id);
+        return response()->json([
+            "statusCode" => 200,
+            'mesage' => 'get category user successfully',
+            "data" => $user->toArray()
+        ], 200);
+    }
 }

@@ -18,6 +18,7 @@ class CreateCategoriesTable extends Migration
             $table->bigInteger('parent_id')->unsigned()->nullable(); // 0 stands for no parent //maybe need nullable()
             // $table->foreign('parent_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
             // $table->foreign('parent_id')->references('id')->on('categories');
+            $table->bigInteger('user_id')->unsigned()->nullable();
             $table->string('title');
             $table->string('description')->nullable();
             $table->timestamps();
