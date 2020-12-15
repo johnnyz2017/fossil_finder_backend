@@ -237,4 +237,17 @@ class CategoryController extends Controller
             "data" => $user->toArray()
         ], 200);
     }
+
+    public function index(){
+        $categories = Category::all();
+        return response()->json(
+            [
+                "code" => 200,
+                'paginated' => false,
+                'mesage' => 'success to get categories',
+                "data" => $categories->toArray()
+            ],
+            200
+        );
+    }
 }
