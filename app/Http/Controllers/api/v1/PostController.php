@@ -219,6 +219,30 @@ class PostController extends Controller
         ], 200);
     }
 
+    public function destroy(Request $request, $id){
+        $user = auth()->user();
+        if($user == null)
+            return response()->json([
+                'message' => 'Failed to find user',
+                'code' => 401
+            ], 401);
+
+        $post = Post::find($id);
+        if($post->user_id != $user->id){
+            return response()->json([
+                'message' => 'Not the owner or admin',
+                'code' => 401
+            ], 401);
+        }
+
+        $post->delete();
+
+        return response()->json([
+            'code' => 200,
+            'message' => 'OK'
+        ], 200);
+    }
+
     public function update(Request $request, $id){
         $user = auth()->user();
         if($user == null)

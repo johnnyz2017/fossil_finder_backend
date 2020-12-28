@@ -26,9 +26,19 @@ class Category extends Model
         return $this->hasMany(self::class, 'parent_id', 'id');
     }
 
+    // public function countChilds(){
+    //     // return count($this->hasMany(self::class, 'parent_id', 'id'));
+    //     return $this->hasMany(self::class, 'parent_id', 'id')->count();
+    // }
+
     public function posts(){
         return $this->hasMany(Post::class, 'category_id', 'id');
     }
+
+    // public function countPosts(){
+    //     //return count($this->hasMany(Post::class, 'category_id', 'id'));
+    //     return 1;
+    // }
 
 
     public function audit_posts(){

@@ -14,15 +14,6 @@ class UserController extends Controller
         return $users->toArray();
     }
 
-    // public function publicPostsViaAuth(){
-    //     $auser = auth()->user();
-    //     $user = User::find($auser->id);
-    // }
-
-    // public function privatePostsViaAuth(){
-    //     $auser = auth()->user();
-    // }
-
     public function self(){
         $auser = auth()->user();
         $user = User::find($auser->id);
@@ -31,7 +22,7 @@ class UserController extends Controller
             return response()->json([
                 'message' => 'Failed to find user',
                 'code' => 401
-            ], 401);
+            ], 200);
         }
 
         return response()->json([
@@ -54,16 +45,13 @@ class UserController extends Controller
     public function postsviaauth(){
         // return $this->hasMany(Post::class);
         $user = auth()->user();
-        // dd($user);
         if($user == null)
             return response()->json([
                 'message' => 'Failed to find user',
                 'code' => 401
-            ], 401);
+            ], 200);
         
         $posts = $user->posts;
-        // dd($posts);
-        // dd($posts);
         return response()->json([
             "code" => 200,
             "data" => $posts->toArray()
@@ -108,14 +96,13 @@ class UserController extends Controller
             return response()->json([
                 'message' => 'Failed to find user',
                 'code' => 401
-            ], 401);
+            ], 200);
 
         $muser = User::find($user->id);
 
         $data = $this->validate($request, [
             'name' => 'min:3 | max:50',
-            // 'email' => 'required',
-            // 'password' => 'min:6',
+            'description' => '',
             'profile_image' => ''
         ]);
 
@@ -137,7 +124,10 @@ class UserController extends Controller
             $muser->profile_image = request('profile_image');
         }
 
-        // $muser->update($data);
+        if (request()->has('description')) {
+            $muser->description = request('description');
+        }
+
         $muser->save();
 
         return response()->json([

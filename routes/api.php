@@ -39,6 +39,7 @@ Route::get('v1/posts', [PostController::class, 'index'])->middleware('auth:api')
 Route::get('v1/posts/{id}', [PostController::class, 'show'])->middleware('auth:api');
 Route::post('v1/posts', [PostController::class, 'store'])->middleware('auth:api');
 Route::post('v1/posts/{id}', [PostController::class, 'update'])->middleware('auth:api');
+Route::delete('v1/posts/{id}', [PostController::class, 'destroy'])->middleware('auth:api');
 
 Route::get('v1/posts/{id}/category', [PostController::class, 'category']);
 Route::get('v1/posts/{id}/user', [PostController::class, 'user']);
@@ -50,8 +51,13 @@ Route::get('v1/categories/allwithposts', [CategoryController::class, 'allWithPos
 Route::get('v1/categories/allwithoutposts', [CategoryController::class, 'allWithoutPosts']);
 Route::get('v1/categories', [CategoryController::class, 'index']);
 Route::get('v1/categories/{id}', [CategoryController::class, 'show']);
+Route::post('v1/categories', [CategoryController::class, 'store'])->middleware('auth:api');
+Route::post('v1/categories/{id}', [CategoryController::class, 'update'])->middleware('auth:api');
+Route::delete('v1/categories/{id}', [CategoryController::class, 'destroy'])->middleware('auth:api');
 Route::get('v1/categories/{id}/posts', [CategoryController::class, 'showPost']);
 Route::get('v1/categories/{id}/user', [CategoryController::class, 'user']);
+Route::get('v1/categories/{id}/editable', [CategoryController::class, 'editable'])->middleware('auth:api');
+Route::get('v1/categories/{id}/deleteable', [CategoryController::class, 'deleteable'])->middleware('auth:api');
 
 // Route::get('v1/categories', function () {
 //     $category = Category::with('childs')->get();
@@ -72,32 +78,3 @@ Route::post('v1/changepw', [UserController::class, 'changePassword'])->middlewar
 Route::get('v1/publishedposts', [PostController::class, 'publishedPostsViaAuth'])->middleware('auth:api');
 Route::get('v1/unpublishedposts', [PostController::class, 'unpublishedPostsViaAuth'])->middleware('auth:api');
 Route::get('v1/privateposts', [PostController::class, 'privatePostsViaAuth'])->middleware('auth:api');
-
-
-
-
-//test
-// Route::get('v1/users', function () {
-//     // $user->hasRole('owner');   // false
-//     // $user->hasRole('admin');   // true
-//     // $user->isAbleTo('edit-user');   // false
-//     // $user->isAbleTo('create-post'); // true
-//     // $user = App\Models\User::with('roles')->first();
-//     // $user = User::whereRoles('administrator')->get(); //select * from `users` where `roles` = administrator
-//     // echo $user->hasRole('administrator'); //Column not found: 1054 Unknown column 'roles' in 'where clause' (SQL: select * from `users` where `roles` = administrator)
-
-//     //$email = DB::table('users')->where('name', 'John')->value('email');
-//     // echo $role_id;
-//     // $user_type = DB::table('role_user')->where('user_id', $user->id)->value('user_type');
-//     // echo $user_type;
-
-
-//     $user = User::all()->first();
-//     $role_id = DB::table('role_user')->where('user_id', $user->id)->value('role_id');
-//     if($role_id < 3){
-//         echo 'admin or super admin';
-//     }else{
-//         echo 'non admin';
-//     }
-//     return $user->toArray();
-// });

@@ -18,7 +18,7 @@ class CategoryController extends Controller
         //     return response()->json([
         //         'message' => 'Failed to auth user',
         //         'code' => 401
-        //     ], 401);
+        //     ], 200);
 
         $category = Category::find($id);
  
@@ -27,7 +27,7 @@ class CategoryController extends Controller
                 'code' => 404,
                 'success' => false,
                 'message' => 'Category not found '
-            ], 400);
+            ], 200);
         }
 
         return response()->json([
@@ -45,7 +45,7 @@ class CategoryController extends Controller
         //     return response()->json([
         //         'message' => 'Failed to auth user',
         //         'code' => 401
-        //     ], 401);
+        //     ], 200);
 
         $category = Category::find($id);
  
@@ -54,7 +54,7 @@ class CategoryController extends Controller
                 'code' => 404,
                 'success' => false,
                 'message' => 'Category not found '
-            ], 400);
+            ], 200);
         }
 
         return response()->json([
@@ -120,7 +120,7 @@ class CategoryController extends Controller
                 "statusCode" => 404,
                 'mesage' => 'no data found',
                 "data" => ''
-            ], 404);
+            ], 200);
         }
         // dd($root);
         if($root->count() == 0){
@@ -128,7 +128,7 @@ class CategoryController extends Controller
                 "statusCode" => 404,
                 'mesage' => 'no data found',
                 "data" => json_encode($root)
-            ], 400);
+            ], 200);
         }
 
         // $ndata = [];
@@ -172,7 +172,7 @@ class CategoryController extends Controller
                 "statusCode" => 404,
                 'mesage' => 'no data found',
                 "data" => ''
-            ], 404);
+            ], 200);
         }
 
         if($root->count() == 0){
@@ -180,7 +180,7 @@ class CategoryController extends Controller
                 "statusCode" => 404,
                 'mesage' => 'no data found',
                 "data" => json_encode($root)
-            ], 400);
+            ], 200);
         }
 
         $ch = $root->toChildrenPostArray();
@@ -199,7 +199,7 @@ class CategoryController extends Controller
                 "statusCode" => 404,
                 'mesage' => 'no data found',
                 "data" => ''
-            ], 404);
+            ], 200);
         }
 
         if($root->count() == 0){
@@ -207,7 +207,7 @@ class CategoryController extends Controller
                 "statusCode" => 404,
                 'mesage' => 'no data found',
                 "data" => json_encode($root)
-            ], 400);
+            ], 200);
         }
 
         $ch = $root->toChildrenArray();
@@ -226,7 +226,7 @@ class CategoryController extends Controller
                 "statusCode" => 404,
                 'mesage' => 'no category found',
                 "data" => ''
-            ], 404);
+            ], 200);
         }
 
         $user_id = $category->user;
@@ -249,5 +249,158 @@ class CategoryController extends Controller
             ],
             200
         );
+    }
+
+    public function store(Request $request)
+    {
+        $user = auth()->user();
+        if($user == null)
+            return response()->json([
+                'message' => '用户验证失败',
+                'code' => 401
+            ], 200);
+
+        $data = $this->validate($request, [
+            'title' => 'required',
+            'parent_id' => '',
+            'description' => ''
+        ]);
+
+        if($request->get('parent_id') == null){
+            $data['parent_id'] = 0;
+        }
+
+        $data['user_id'] = $user->id;
+
+        Category::create($data);
+
+        return response()->json([
+            'message' => 'OK',
+            'code' => 200
+        ], 200);
+    }
+
+    public function destroy(Request $request, $id){
+        $user = auth()->user();
+        if($user == null)
+            return response()->json([
+                'message' => '用户验证失败',
+                'code' => 401
+            ], 200);
+
+        $category = Category::find($id);
+        if($category->id < 1){
+            return response()->json([
+                'message' => '无法删除非常规类别ID',
+                'code' => 301
+            ], 200);
+        }
+        if($category->user_id != $user->id){
+            return response()->json([
+                'message' => '非所有者或者管理员用户，无法操作删除',
+                'code' => 401
+            ], 200);
+        }
+
+        $category->delete();
+
+        return response()->json([
+            'code' => 200,
+            'message' => 'OK'
+        ], 200);
+    }
+
+    public function update(Request $request, $id){
+        $user = auth()->user();
+        if($user == null)
+            return response()->json([
+                'message' => '用户验证失败',
+                'code' => 401
+            ], 200);
+
+        $category = Category::find($id);
+        if($category->id < 1){
+            return response()->json([
+                'message' => '无法编辑非常规类别ID',
+                'code' => 301
+            ], 200);
+        }
+        if($category->user_id != $user->id){
+            return response()->json([
+                'message' => '非所有者或者管理员用户，无法操作删除',
+                'code' => 401
+            ], 200);
+        }
+
+        $data = $this->validate($request, [
+            'title' => 'required',
+            'parent_id' => '',
+            'description' => ''
+        ]);
+
+        $data['user_id'] = $user->id;
+
+        $category->update($data);
+
+        return response()->json([
+            'code' => 200,
+            'message' => 'OK'
+        ], 200);
+    }
+
+    public function editable(Request $request, $id){
+        $user = auth()->user();
+        if($user == null)
+            return response()->json([
+                'message' => '用户验证失败',
+                'code' => 401
+            ], 200);
+
+        $category = Category::find($id);
+        if($category->user_id != $user->id){
+            if($user->role > 2){
+                return response()->json([
+                    'message' => '非所有者或者管理员用户，无法操作删除',
+                    'code' => 401
+                ], 200);
+            }else{
+                return response()->json([
+                    'code' => 200,
+                    'message' => '管理员权限'
+                ], 200);
+            }
+        }
+        
+        return response()->json([
+            'code' => 200,
+            'message' => '所属者权限'
+        ], 200);
+    }
+
+    public function deleteable(Request $request, $id){
+        $user = auth()->user();
+        if($user == null)
+            return response()->json([
+                'message' => '用户token鉴权失败',
+                'code' => 401
+            ], 200);
+
+        $category = Category::find($id);
+        if($category->user_id != $user->id && $user->role > 2){
+            return response()->json([
+                'message' => '非所有者或者管理员用户，无法操作删除',
+                'code' => 401
+            ], 200);
+        }else if($category->childs->count() > 0 || $category->posts->count() > 0){
+            return response()->json([
+                'code' => 300,
+                'message' => '该类别下有子类别或者记录，不能直接删除'
+            ], 200);
+        }else{
+            return response()->json([
+                'code' => 200,
+                'message' => 'OK'
+            ], 200);
+        }
     }
 }
