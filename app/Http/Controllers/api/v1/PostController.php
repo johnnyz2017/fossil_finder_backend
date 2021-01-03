@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
@@ -350,5 +351,47 @@ class PostController extends Controller
             'success' => true,
             'data' => $user->toArray()
         ], 200);
+    }
+
+    public function search(Request $request){
+        $search_key = $request['search_key'];
+        // dd($search_key);
+        $search_type = $request['type'];
+        switch($search_type){
+            case 'title': 
+                $result = Post::where('title', 'like', '%'.$search_type.'%')->get();
+                return response()->json([
+                    'success' => true,
+                    'data' => $result->toArray()
+                ]);
+            case 'author': 
+                $users = User::where('name', 'like', '%'.$search_key.'%')->get();
+                $result = collect();
+                foreach($users as $user){
+                    $ret = $user->posts;
+                    $result->add($ret);
+                    
+                }
+                return response()->json([
+                    'success' => true,
+                    'data' => $result->toArray()
+                ]);
+            case 'category': 
+                //dd('category get');
+                $result = collect();
+                $categories = Category::where('title', 'like', '%'.$search_key.'%')->get();
+                foreach($categories as $category){
+                    $ret = $category->posts;
+                    $result->add($ret);
+                    // $result->merge($ret);
+                }
+                return response()->json([
+                    'success' => true,
+                    'data' => $result->toArray()
+                ]);
+            case 'all' : 
+                dd('all get');
+            break;
+        }
     }
 }

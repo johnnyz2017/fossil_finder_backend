@@ -43,6 +43,7 @@ Route::delete('v1/posts/{id}', [PostController::class, 'destroy'])->middleware('
 
 Route::get('v1/posts/{id}/category', [PostController::class, 'category']);
 Route::get('v1/posts/{id}/user', [PostController::class, 'user']);
+Route::get('v1/search', [PostController::class, 'search']);
 
 Route::get('v1/categories/{id}/childs', [CategoryController::class, 'childs']);
 Route::get('v1/categories/posts', [CategoryController::class, 'posts']);
