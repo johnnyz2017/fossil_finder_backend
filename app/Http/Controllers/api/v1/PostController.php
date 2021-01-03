@@ -365,13 +365,26 @@ class PostController extends Controller
                     'data' => $result->toArray()
                 ]);
             case 'author': 
-                $users = User::where('name', 'like', '%'.$search_key.'%')->get();
-                $result = collect();
-                foreach($users as $user){
-                    $ret = $user->posts;
-                    $result->add($ret);
+                // $result = Post::whereHas('user', function($query){
+                //     $query->whereId($user->id);
+                // });
+
+                // $result = Post::has('user.name', 'like', '%'.$search_key.'%')->get();
+                $query_worlds = '%'.$search_key.'%';
+                $result = Post::whereHas('user', function($query){
+                    $query->where('name', 'like', '%马%');
+                })->get();
+                // $result = Post::with(['user' => function($query){
+                //     $query->where('name', 'like', '%search_key%');
+                // }])->get();
+
+                // $users = User::where('name', 'like', '%'.$search_key.'%')->get();
+                // $result = collect();
+                // foreach($users as $user){
+                //     $ret = $user->posts;
+                //     $result->add($ret);
                     
-                }
+                // }
                 return response()->json([
                     'success' => true,
                     'data' => $result->toArray()

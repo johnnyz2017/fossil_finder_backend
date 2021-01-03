@@ -105,4 +105,8 @@ class Category extends Model
 
         return $data;
     }
+
+    // public function scopeAuthor($query, $authorName){
+    //     return $query->where('author');
+    // }
 }
