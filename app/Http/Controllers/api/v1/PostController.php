@@ -355,56 +355,56 @@ class PostController extends Controller
 
     public function search(Request $request){
         $search_key = $request['search_key'];
-        // dd($search_key);
         $search_type = $request['type'];
         switch($search_type){
             case 'title': 
-                $result = Post::where('title', 'like', '%'.$search_type.'%')->get();
+                $result = Post::where('title', 'like', '%'.$search_key.'%')->get();
+
                 return response()->json([
                     'success' => true,
                     'data' => $result->toArray()
                 ]);
             case 'author': 
-                // $result = Post::whereHas('user', function($query){
-                //     $query->whereId($user->id);
-                // });
-
-                // $result = Post::has('user.name', 'like', '%'.$search_key.'%')->get();
-                $query_worlds = '%'.$search_key.'%';
-                $result = Post::whereHas('user', function($query){
-                    $query->where('name', 'like', '%马%');
+                $result = Post::whereHas('user', function($query) use ($search_key){
+                    $query->where('name', 'like', '%'.$search_key.'%');
                 })->get();
-                // $result = Post::with(['user' => function($query){
-                //     $query->where('name', 'like', '%search_key%');
-                // }])->get();
-
-                // $users = User::where('name', 'like', '%'.$search_key.'%')->get();
-                // $result = collect();
-                // foreach($users as $user){
-                //     $ret = $user->posts;
-                //     $result->add($ret);
-                    
-                // }
+                
                 return response()->json([
                     'success' => true,
                     'data' => $result->toArray()
                 ]);
             case 'category': 
-                //dd('category get');
-                $result = collect();
-                $categories = Category::where('title', 'like', '%'.$search_key.'%')->get();
-                foreach($categories as $category){
-                    $ret = $category->posts;
-                    $result->add($ret);
-                    // $result->merge($ret);
-                }
+                $result = Post::whereHas('category', function($query) use ($search_key){
+                    $query->where('title', 'like', '%'.$search_key.'%');
+                })->get();
+
                 return response()->json([
                     'success' => true,
                     'data' => $result->toArray()
                 ]);
-            case 'all' : 
-                dd('all get');
-            break;
+            case 'all' :
+                $result1 = Post::where('title', 'like', '%'.$search_key.'%')->get();
+                $result2 = Post::whereHas('user', function($query) use ($search_key){
+                    $query->where('name', 'like', '%'.$search_key.'%');
+                })->get();
+                $result3 = Post::whereHas('category', function($query) use ($search_key){
+                    $query->where('title', 'like', '%'.$search_key.'%');
+                })->get();
+                $result = $result1->merge($result2);
+                $result = $result->merge($result3);
+
+                //get users ids
+                //get categories id
+                // $result = Post::where(function($query) use ($search_key){
+                //     $query->where('title', 'like', '%'.$search_key.'%');
+                //     // $query->where('name', 'like', '%'.$search_key.'%');
+                //     // $query->where('title', 'like', '%'.$search_key.'%');
+                // })->get();
+
+                return response()->json([
+                    'success' => true,
+                    'data' => $result->toArray()
+                ]);
         }
     }
 }
