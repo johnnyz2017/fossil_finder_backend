@@ -361,6 +361,8 @@ class PostController extends Controller
                 $result = Post::where('title', 'like', '%'.$search_key.'%')->get();
 
                 return response()->json([
+                    'code' => 200,
+                    'paginated' => false,
                     'success' => true,
                     'data' => $result->toArray()
                 ]);
@@ -370,6 +372,8 @@ class PostController extends Controller
                 })->get();
                 
                 return response()->json([
+                    'code' => 200,
+                    'paginated' => false,
                     'success' => true,
                     'data' => $result->toArray()
                 ]);
@@ -379,6 +383,8 @@ class PostController extends Controller
                 })->get();
 
                 return response()->json([
+                    'code' => 200,
+                    'paginated' => false,
                     'success' => true,
                     'data' => $result->toArray()
                 ]);
@@ -402,6 +408,8 @@ class PostController extends Controller
                 // })->get();
 
                 return response()->json([
+                    'code' => 200,
+                    'paginated' => false,
                     'success' => true,
                     'data' => $result->toArray()
                 ]);
