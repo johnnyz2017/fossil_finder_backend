@@ -14,6 +14,10 @@ class CategoryTableSeeder extends Seeder
      */
     public function run()
     {
+        Category::create([
+            'id' => 0,
+            'title' => 'root'
+        ]);
         Category::factory(10)->create();
     }
 }
