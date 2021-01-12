@@ -392,6 +392,7 @@ class PostController extends Controller
                     'data' => $result->toArray()
                 ]);
             case 'all' :
+                default:
                 $result1 = Post::where('title', 'like', '%'.$search_key.'%')->get();
                 $result2 = Post::whereHas('user', function($query) use ($search_key){
                     $query->where('name', 'like', '%'.$search_key.'%');
