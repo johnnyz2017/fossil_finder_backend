@@ -88,10 +88,20 @@
     <script>
         window.onLoad  = function(){
             var map = new AMap.Map('container', {
+                zooms: [4,18],//设置地图级别范围
                 zoom:11,//级别
+                layers: [//使用多个图层
+                    new AMap.TileLayer.Satellite()
+                ],
                 center: [116.397428, 39.90923],//中心点坐标
                 viewMode:'3D'//使用3D视图
             });
+
+            var marker = new AMap.Marker({
+                position:[116.39, 39.9]//位置
+            })
+            map.add(marker);//添加到地图
+            // map.remove(marker);
         }
         var url = 'https://webapi.amap.com/maps?v=1.4.15&key=f885b7b92d0285147996269b7afaa30e&callback=onLoad';
         var jsapi = document.createElement('script');
