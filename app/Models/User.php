@@ -50,6 +50,10 @@ class User extends Authenticatable
         return $this->role;
     }
 
+    public function categories(){
+        return $this->hasMany(Category::class, 'user_id', 'id');
+    }
+
     public function posts(){
         return $this->hasMany(Post::class, 'user_id', 'id');
     }
@@ -73,6 +77,9 @@ class User extends Authenticatable
     public function toArray()
     {
         $data = parent::toArray();
+        $data['posts_count'] = $this->posts()->count();
+        $data['categories_count'] = $this->categories()->count();
+        $data['comments_count'] = $this->comments()->count();
 
         return $data;
     }

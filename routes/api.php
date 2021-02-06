@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\api\v1\CategoryController;
 use App\Http\Controllers\api\v1\CommentController;
+use App\Http\Controllers\api\v1\FSeriesController;
+use App\Http\Controllers\api\v1\FStageController;
+use App\Http\Controllers\api\v1\FSystemController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -79,3 +82,10 @@ Route::post('v1/changepw', [UserController::class, 'changePassword'])->middlewar
 Route::get('v1/publishedposts', [PostController::class, 'publishedPostsViaAuth'])->middleware('auth:api');
 Route::get('v1/unpublishedposts', [PostController::class, 'unpublishedPostsViaAuth'])->middleware('auth:api');
 Route::get('v1/privateposts', [PostController::class, 'privatePostsViaAuth'])->middleware('auth:api');
+
+Route::get('v1/system', [FSystemController::class, 'index']);
+Route::get('v1/system/{id}', [FSystemController::class, 'show']);
+Route::get('v1/system/{id}/series', [FSystemController::class, 'series']);
+Route::get('v1/series/{id}', [FSeriesController::class, 'show']);
+Route::get('v1/series/{id}/stages', [FSeriesController::class, 'stages']);
+Route::get('v1/stage/{id}', [FStageController::class, 'show']);

@@ -208,6 +208,9 @@ class PostController extends Controller
             // 'coordinate_longitude' => 'required | regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
             // 'coordinate_altitude' => 'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
             'address' => '',
+            'system' => '',
+            'series' => '',
+            'stage' => '',
             'category_id' => '',
             'private' => ''
         ]);
@@ -274,6 +277,9 @@ class PostController extends Controller
             // 'coordinate_longitude' => 'required | regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
             // 'coordinate_altitude' => 'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
             'address' => '',
+            'system' => '',
+            'series' => '',
+            'stage' => '',
             'category_id' => '',
             'private' => ''
         ]);

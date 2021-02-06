@@ -42,6 +42,9 @@ class CreatePostsTable extends Migration
             $table->double('coordinate_longitude'); //经度
             $table->double('coordinate_latitude'); //纬度
             $table->double('coordinate_altitude')->nullable(); //高度 海拔
+            $table->string('system')->nullable();
+            $table->string('series')->nullable();
+            $table->string('stage')->nullable();
             $table->string('address')->nullable();
             $table->timestamps();
 

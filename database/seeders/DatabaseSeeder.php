@@ -27,8 +27,13 @@ class DatabaseSeeder extends Seeder
 
         $this->call(LaratrustSeeder::class);
 
+        $this->call(FSystemSeeder::class);
+        $this->call(FSeriesSeeder::class);
+        $this->call(FStageSeeder::class);
+
         Category::factory(10)->create();
         Post::factory(20)->create();
         Comment::factory(30)->create();
+
     }
 }
