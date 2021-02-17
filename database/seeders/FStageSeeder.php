@@ -61,5 +61,50 @@ class FStageSeeder extends Seeder
             'series_id' => 3,
             'name' => 'Zanclean'
         ]);
+        FStage::create([
+            'id' => 10,
+            'series_id' => 4,
+            'name' => 'Messinian'
+        ]);
+        FStage::create([
+            'id' => 11,
+            'series_id' => 4,
+            'name' => 'Tortonian'
+        ]);
+        FStage::create([
+            'id' => 12,
+            'series_id' => 4,
+            'name' => 'Serravallian'
+        ]);
+        FStage::create([
+            'id' => 13,
+            'series_id' => 4,
+            'name' => 'Langhian'
+        ]);
+        FStage::create([
+            'id' => 14,
+            'series_id' => 4,
+            'name' => 'Burdigalian'
+        ]);
+        FStage::create([
+            'id' => 15,
+            'series_id' => 4,
+            'name' => 'Aquitanian'
+        ]);
+        FStage::create([
+            'id' => 16,
+            'series_id' => 5,
+            'name' => 'Chattian'
+        ]);
+        FStage::create([
+            'id' => 17,
+            'series_id' => 5,
+            'name' => 'Rupelian'
+        ]);
+        FStage::create([
+            'id' => 18,
+            'series_id' => 6,
+            'name' => 'Priabonian'
+        ]);
     }
 }

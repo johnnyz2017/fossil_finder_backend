@@ -32,6 +32,11 @@ class Comment extends Model
     {
         $data = parent::toArray();
         $data['author'] = User::find($this->user_id)->name;
+        if($this->category_id){
+            $data['category_name'] = Category::find($this->category_id)->title;
+        }else{
+            $data['category_name'] = '未鉴定';
+        }
 
         return $data;
     }

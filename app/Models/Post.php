@@ -54,13 +54,19 @@ class Post extends Model
         if($this->user_id){
             $data['author'] = User::find($this->user_id)->name;
         }else{
-            $data['author'] = 'unkown';
+            $data['author'] = '未命名';
         }
 
         if($this->comments){
             $data['comments'] = $this->comments; 
         }else{
             $data['comments'] = [];
+        }
+
+        if($this->category_id){
+            $data['category_name'] = Category::find($this->category_id)->title;
+        }else{
+            $data['category_name'] = '';
         }
 
         return $data;
@@ -71,6 +77,11 @@ class Post extends Model
         $data = parent::toArray();
         $data['label'] = $this->title;
         $data['key'] = "p_".(string)$this->id;
+        if($this->category_id){
+            $data['category_name'] = Category::find($this->category_id)->title;
+        }else{
+            $data['category_name'] = '未鉴定';
+        }
         return $data;
     }
 }

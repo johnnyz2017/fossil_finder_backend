@@ -26,14 +26,12 @@
     </main>
     </div>
     <footer class="c-footer">
-    <div><a href="https://coreui.io">CoreUI</a> © 2020 creativeLabs.</div>
     <div class="mfs-auto">Powered by&nbsp;<a href="https://coreui.io/pro/">CoreUI Pro</a></div>
     </footer>
 </div>
 
- <!-- Optional JavaScript -->
- <!-- Popper.js first, then CoreUI JS -->
  <script src="https://unpkg.com/@popperjs/core@2"></script>
  <script src="https://unpkg.com/@coreui/coreui/dist/js/coreui.min.js"></script>
- </body>
+
+</body>
 </html>

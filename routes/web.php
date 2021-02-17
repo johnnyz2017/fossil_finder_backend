@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\HelloController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,8 +19,11 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-    // return view('welcome');
     return view('pages.home');
+});
+
+Route::get('/welcome', function () {
+    return view('welcome');
 });
 
 Auth::routes();
@@ -32,3 +38,18 @@ Route::post('add-category', [App\Http\Controllers\TreeViewController::class, 'ad
 Route::get('menus', [MenuController::class, 'index']);
 Route::get('menus-show', [MenuController::class, 'show']);
 Route::post('menus', [MenuController::class, 'store'])->name('menus.store');
+
+// Route::get('/hello', function(){
+//     // return 'Hello';
+
+//     $helloString = 'hello from routes';
+//     return view('hello', compact('helloString'));
+// });
+Route::get('/hello', [HelloController::class, 'posts']);
+
+Route::resource('posts', PostController::class);
+Route::resource('users', UserController::class);
+// Route::resource([
+//     'users' => UserController::class,
+//     'posts' => PostController::class
+// ]);

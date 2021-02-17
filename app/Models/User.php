@@ -58,6 +58,14 @@ class User extends Authenticatable
         return $this->hasMany(Post::class, 'user_id', 'id');
     }
 
+    public function private_posts(){
+        return $this->hasMany(Post::class, 'user_id', 'id')->where('published', '=', false);
+    }
+
+    public function public_posts(){
+        return $this->hasMany(Post::class, 'user_id', 'id')->where('published', '=', true);
+    }
+
     public function comments(){
         return $this->hasMany(Comment::class, 'user_id', 'id');
     }
@@ -80,6 +88,8 @@ class User extends Authenticatable
         $data['posts_count'] = $this->posts()->count();
         $data['categories_count'] = $this->categories()->count();
         $data['comments_count'] = $this->comments()->count();
+        $data['private_posts_count'] = $this->private_posts()->count();
+        $data['public_posts_count'] = $this->public_posts()->count();
 
         return $data;
     }
