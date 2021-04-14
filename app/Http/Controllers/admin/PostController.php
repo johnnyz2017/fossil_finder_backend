@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Comment;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\Post;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
@@ -16,8 +15,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('id', 'desc')->paginate(5);
-        return view('posts.index')->withPosts($posts);
+        // $posts = Post::latest()->paginate(10);
+        $posts = Post::with('user')->with('category')->paginate(10);
+        // $posts = User::all();
+        // dd($posts);
+        return view('admin.posts.index', compact('posts'));
     }
 
     /**
@@ -27,11 +29,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        if(Auth::user()){
-            return view('posts.create');
-        }else{
-         return redirect()->route('login');
-        }
+        //
     }
 
     /**
@@ -48,24 +46,21 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        $post = Post::find($id);
-        $comments = Comment::where('post_id', '=', $id)->get();
-        $comments = Comment::with('user')->where('post_id', '=', $id)->get();
-        return view('posts.show')->withPost($post)->withComments($comments);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
         //
     }
@@ -74,10 +69,10 @@ class PostController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
         //
     }
@@ -85,10 +80,10 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
         //
     }

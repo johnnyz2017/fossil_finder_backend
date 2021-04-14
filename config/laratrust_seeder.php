@@ -12,20 +12,22 @@ return [
     'truncate_tables' => true,
 
     'roles_structure' => [
-        'superadministrator' => [
+        'Super Administrator' => [
             'users' => 'c,r,u,d',
-            'payments' => 'c,r,u,d',
+            'posts' => 'c,r,u,d',
             'profile' => 'r,u'
         ],
-        'administrator' => [
+        'Administrator' => [
             'users' => 'c,r,u,d',
+            'posts' => 'c,r,u,d',
             'profile' => 'r,u'
         ],
-        'user' => [
+        'Entry Staff' => [
             'profile' => 'r,u',
+            'posts' => 'c,r,u,d',
         ],
-        'role_name' => [
-            'module_1_name' => 'c,r,u,d',
+        'User' => [
+            'profile' => 'r,u',
         ]
     ],
 

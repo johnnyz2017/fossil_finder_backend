@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Fossil Finder</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -51,6 +51,8 @@
         @endif
             <div class="container-fluid">
                 @yield('content')
+
+                {{-- @includeWhen(request()->is('/'), 'partials.map') --}}
             </div>
         </div>
     </main>
@@ -62,6 +64,6 @@
 
  <script src="https://unpkg.com/@popperjs/core@2"></script>
  <script src="https://unpkg.com/@coreui/coreui/dist/js/coreui.min.js"></script>
-
+ {{-- @yield('scripts') --}}
 </body>
 </html>

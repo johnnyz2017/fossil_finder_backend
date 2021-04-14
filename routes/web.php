@@ -1,11 +1,14 @@
 <?php
 
+use App\Admin\Controllers\PostController as ControllersPostController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\HelloController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Category;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +21,12 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('pages.home');
-});
+// Route::get('/', function () {
+//     return view('home');
+// });
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
+
+Route::get('/index', [App\Http\Controllers\TreeViewController::class, 'index']);
 
 Route::get('/welcome', function () {
     return view('welcome');
@@ -53,3 +59,17 @@ Route::resource('users', UserController::class);
 //     'users' => UserController::class,
 //     'posts' => PostController::class
 // ]);
+
+
+
+Route::group(['middleware' => ['auth']], function () {
+	Route::name('admin.')->group(function() {
+		Route::group(['prefix' => 'admin'], function() {
+			// Route::get('/', 'Admin\BoardController@index')->name('board');
+			Route::resource('users', App\Http\Controllers\Admin\UserController::class);
+			Route::resource('posts', App\Http\Controllers\Admin\PostController::class);
+			// Route::resource('roles', 'Admin\RoleController');
+			// Route::resource('permissions', 'Admin\PermissionController');
+		});
+	});
+});

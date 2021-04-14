@@ -8,9 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laratrust\Traits\LaratrustUserTrait;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
+    use SoftDeletes;
     use LaratrustUserTrait;
     use HasApiTokens;
     use HasFactory, Notifiable;
@@ -70,10 +72,10 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class, 'user_id', 'id');
     }
 
-    public function roles(){
-        // return $this->belongsToMany(Role::class, '')
-        return User::whereRoles('administrator')->get();
-    }
+    // public function roles(){
+    //     // return $this->belongsToMany(Role::class, '')
+    //     return User::whereRoles('administrator')->get();
+    // }
 
     // public function admins(){
     //     // return $this->query('');

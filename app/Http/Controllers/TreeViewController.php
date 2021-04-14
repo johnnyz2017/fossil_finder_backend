@@ -7,11 +7,24 @@ use App\Models\Category;
 
 class TreeViewController extends Controller
 {
-    public function treeView(){       
+    public function index(){       
         $Categorys = Category::where('parent_id', '=', 0)->get();
         $tree='<ul id="browser" class="filetree"><li class="tree-view"></li>';
         foreach ($Categorys as $Category) {
              $tree .='<li class="tree-view closed"<a class="tree-name">'.$Category->title.'</a>';
+             if(count($Category->childs)) {
+                $tree .=$this->childView($Category);
+            }
+        }
+        $tree .='<ul>';
+        return view('home',compact('tree'));
+    }
+
+    public function treeView(){       
+        $Categorys = Category::where('parent_id', '=', 0)->get();
+        $tree='<ul id="browser" class="filetree"><li class="tree-view"></li>';
+        foreach ($Categorys as $Category) {
+             $tree .='<li class="tree-view closed"><a class="tree-name">'.$Category->title.'</a>';
              if(count($Category->childs)) {
                 $tree .=$this->childView($Category);
             }
