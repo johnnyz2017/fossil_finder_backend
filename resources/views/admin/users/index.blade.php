@@ -43,6 +43,28 @@
                                         @method('delete')
                                         <button onclick="return confirm('Are you sure you want to delete this?')" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i>Delete</button>
                                     </form>
+                                    {{-- @if(count($user->roles) > 0)
+                                        @if( $current_user->roles[0]->id == 1 || $user->roles[0]->id > $current_user->roles[0]->id)
+                                            <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-primary btn-sm">Edit</a>
+                                            <form method="post" action="{{ route('admin.users.destroy', $user) }}">
+                                                @csrf
+                                                @method('delete')
+                                                <button onclick="return confirm('Are you sure you want to delete this?')" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i>Delete</button>
+                                            </form>
+                                        @else
+                                            @if($user->id == $current_user->id)
+                                                <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-primary btn-sm">Edit</a>
+                                            @endif
+                                        @endif
+                                    
+                                    @else
+                                        <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-primary btn-sm">Edit</a>
+                                        <form method="post" action="{{ route('admin.users.destroy', $user) }}">
+                                            @csrf
+                                            @method('delete')
+                                            <button onclick="return confirm('Are you sure you want to delete this?')" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i>Delete</button>
+                                        </form>
+                                    @endif --}}
                                 </td>
                             </tr>
                             @endforeach

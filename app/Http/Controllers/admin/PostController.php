@@ -17,9 +17,10 @@ class PostController extends Controller
     {
         // $posts = Post::latest()->paginate(10);
         $posts = Post::with('user')->with('category')->paginate(10);
+        $user = auth()->user();
         // $posts = User::all();
         // dd($posts);
-        return view('admin.posts.index', compact('posts'));
+        return view('admin.posts.index', compact('posts', 'user'));
     }
 
     /**

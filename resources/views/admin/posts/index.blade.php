@@ -30,7 +30,13 @@
                                     {{ $post->title }}
                                 </td>
                                 <td>{{ $post->private ? 'No' : 'Yes' }}</td>
-                                <td>{{ $post->published ? 'Yes' : 'No' }}</td>
+                                <td>
+                                    @if($post->published)
+                                    <a href="{{ route('admin.posts.edit', $post) }}" class="btn btn-primary btn-sm">UnPublish</a>
+                                    @else
+                                    <a href="{{ route('admin.posts.edit', $post) }}" class="btn btn-primary btn-sm">Publish</a>
+                                    @endif
+                                </td>
                                 <td>
                                     {{ $post->user ? $post->user->name : '用户不存在' }}
                                 </td>

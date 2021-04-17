@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -36,7 +38,20 @@ class HomeController extends Controller
         $tree .='<ul>';
 
         $posts = Post::all();
-        return view('home',compact('tree', 'posts'));
+
+        $user = null;
+
+        if(Auth::check()){
+            // dd('login');
+            // $user_id = auth()->user()->id;
+            // $user = User::find($user_id)->with('role');
+            // dd($user);
+            $user = auth()->user();
+        }else{
+            // dd('not login');
+        }
+
+        return view('home',compact('tree', 'posts', 'user'));
     }
 
     public function childView($Category){                 

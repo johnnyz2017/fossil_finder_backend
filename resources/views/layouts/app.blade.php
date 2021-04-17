@@ -33,15 +33,37 @@
                         <!-- Left Side Of Navbar -->
                         <ul class="navbar-nav mr-auto">
                             @auth
+                                {{-- {{ dd(auth()->user()->hasRole('adminastrator')) }} --}}
+                                {{-- {{  dd($user->hasRole('superadministrator')) }} --}}
                                 {{-- {{ $user ?? 'no user' }} role --}}
-                                {{-- @if({{ $user->hasRole('superadministrator') }}) --}}
+                                {{-- @if($user->hasRole('superadministrator')) --}}
+                                {{-- {{ Auth::user()->roles }} --}}
+                                @if(count(Auth::user()->roles) > 0)
+                                    @if(Auth::user()->roles[0]->id == 1)
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('admin.users.index') }}">Users</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('admin.posts.index') }}">Posts</a>
+                                        </li>
+                                    @endif
+                                    @if(Auth::user()->roles[0]->id == 2)
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('admin.posts.index') }}">Posts</a>
+                                        </li>
+                                    @endif
+                                @endif
+                                {{-- @if($user->isAbleTo('users-read'))
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('admin.users.index') }}">Users</a>
                                     </li>
+                                @endif
+                                @if($user->isAbleTo('posts-read'))
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('admin.posts.index') }}">Posts</a>
                                     </li>
-                                {{-- @endif --}}
+                                @endif --}}
+                                {{-- @endhasrole --}}
                             @endauth
                         </ul>
                         <!-- Right Side Of Navbar -->

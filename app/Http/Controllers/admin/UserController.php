@@ -19,11 +19,13 @@ class UserController extends Controller
     {
         $roles = Role::with('permissions')->get();
         // dd($roles);
-        // $users = User::latest()->paginate(10);
-        $users = User::paginate(10);
+        $users = User::latest()->paginate(10);
+        // $users = User::paginate(10);
+        // $role_id = auth()->user()-;
+        $current_user = auth()->user();
         // $users = User::all();
         // dd($users);
-        return view('admin.users.index', compact('users', 'roles'));
+        return view('admin.users.index', compact('users', 'roles', 'current_user'));
     }
 
     /**
