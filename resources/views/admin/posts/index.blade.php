@@ -10,7 +10,6 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Images</th>
                                 <th scope="col">Title</th>
                                 <th scope="col">Public</th>
                                 <th scope="col">Published</th>
@@ -24,17 +23,14 @@
                             <tr>
                                 <th scope="row">{{ $post->id }}</th>
                                 <td>
-                                    Images
-                                </td>
-                                <td>
                                     {{ $post->title }}
                                 </td>
                                 <td>{{ $post->private ? 'No' : 'Yes' }}</td>
                                 <td>
                                     @if($post->published)
-                                    <a href="{{ route('admin.posts.edit', $post) }}" class="btn btn-primary btn-sm">UnPublish</a>
+                                    <a href="{{ route('admin.posts.destroy', $post) }}" class="btn btn-primary btn-sm">UnPublish</a>
                                     @else
-                                    <a href="{{ route('admin.posts.edit', $post) }}" class="btn btn-primary btn-sm">Publish</a>
+                                    <a href="{{ route('admin.posts.destroy', $post) }}" class="btn btn-primary btn-sm">Publish</a>
                                     @endif
                                 </td>
                                 <td>
@@ -42,7 +38,6 @@
                                 </td>
                                 <td>{{ $post->created_at->diffForHumans() }}</td>
                                 <td>
-                                    <a href="{{ route('admin.posts.edit', $post) }}" class="btn btn-primary btn-sm">Edit</a>
                                     <form method="post" action="{{ route('admin.posts.destroy', $post) }}">
                                         @csrf
                                         @method('delete')
