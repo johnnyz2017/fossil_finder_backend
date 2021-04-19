@@ -64,16 +64,21 @@ Route::resource('users', UserController::class);
 
 
 
-Route::group(['middleware' => ['auth']], function () {
-	Route::name('admin.')->group(function() {
-		Route::group(['prefix' => 'admin'], function() {
-			// Route::get('/', 'Admin\BoardController@index')->name('board');
-			Route::resource('users', App\Http\Controllers\Admin\UserController::class);
-			Route::resource('posts', App\Http\Controllers\Admin\PostController::class);
-			Route::get('posts/publish/{post}', [App\Http\Controllers\Admin\PostController::class, 'publish'])->name('posts.publish');
-			Route::get('posts/unpublish/{post}', [App\Http\Controllers\Admin\PostController::class, 'unpublish'])->name('posts.unpublish');
-			// Route::resource('roles', 'Admin\RoleController');
-			// Route::resource('permissions', 'Admin\PermissionController');
-		});
-	});
-});
+// Route::group(['middleware' => ['auth']], function () {
+// 	Route::name('admin.')->group(function() {
+// 		Route::group(['prefix' => 'admin'], function() {
+// 			// Route::get('/', 'Admin\BoardController@index')->name('board');
+// 			Route::resource('users', App\Http\Controllers\Admin\UserController::class);
+// 			Route::resource('posts', App\Http\Controllers\Admin\PostController::class);
+// 			Route::get('posts/publish/{post}', [App\Http\Controllers\Admin\PostController::class, 'publish'])->name('posts.publish');
+// 			Route::get('posts/unpublish/{post}', [App\Http\Controllers\Admin\PostController::class, 'unpublish'])->name('posts.unpublish');
+// 			// Route::resource('roles', 'Admin\RoleController');
+// 			// Route::resource('permissions', 'Admin\PermissionController');
+// 		});
+// 	});
+// });
+
+Route::resource('/admin/users', App\Http\Controllers\Admin\UserController::class);
+Route::resource('/admin/posts', App\Http\Controllers\Admin\PostController::class);
+Route::get('/admin/posts/publish/{post}', [App\Http\Controllers\Admin\PostController::class, 'publish'])->name('posts.publish');
+Route::get('/admin/posts/unpublish/{post}', [App\Http\Controllers\Admin\PostController::class, 'unpublish'])->name('posts.unpublish');
