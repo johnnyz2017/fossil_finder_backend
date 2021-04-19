@@ -78,7 +78,7 @@ Route::resource('users', UserController::class);
 // 	});
 // });
 
-Route::resource('/admin/users', App\Http\Controllers\Admin\UserController::class);
-Route::resource('/admin/posts', App\Http\Controllers\Admin\PostController::class);
+Route::resource('/admin/users', AdminUserController::class);
+Route::resource('/admin/posts', AdminUserController::class);
 Route::get('/admin/posts/publish/{post}', [App\Http\Controllers\Admin\PostController::class, 'publish'])->name('posts.publish');
 Route::get('/admin/posts/unpublish/{post}', [App\Http\Controllers\Admin\PostController::class, 'unpublish'])->name('posts.unpublish');
