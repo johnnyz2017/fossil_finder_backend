@@ -29,6 +29,7 @@ class UserFactory extends Factory
             'profile_image' => $this->faker->imageUrl(640, 480),
             'role' => random_int(1, 4),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            // $2y$10$y2htsW1hBMsAR1GqZsS7YOJ.OHSFvxtdAeoMnSRbXMesGue3Sri5q
             'remember_token' => Str::random(10),
         ];
     }

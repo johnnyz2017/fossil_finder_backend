@@ -28,7 +28,7 @@ class PostFactory extends Factory
         $users = collect(User::all()->modelKeys());
         $categories = collect(Category::all()->modelKeys());
 
-        $img_list = array("images/others/hs001.jpeg","images/others/hs002.jpeg","images/others/hs003.jpeg");
+        $img_list = array("http://images.vppdb.com/image_picker_36936C20-D749-4D95-B262-BA67293ED53B-95759-00037EC8E75609DF.jpg", "images/others/hs001.jpeg","images/others/hs002.jpeg","images/others/hs003.jpeg");
         shuffle($img_list);
         // $word = $this->faker->word();
         $word = $this->faker->text(50);

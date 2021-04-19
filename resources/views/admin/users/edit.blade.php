@@ -18,21 +18,36 @@
 							<input type="text" class="form-control" name="email" id="formEmailInput" value="{{ $user->email }}">
 						</div>
 						<div class="form-row">
-							<div class="form-group col-md-6">
-								<label for="inputEmail4">Password</label>
-								<input type="password" name="password" class="form-control" id="inputEmail4">
-							</div>
-							<div class="form-group col-md-6">
+							<label for="inputEmail4">Password</label>
+							<input type="password" name="password" class="form-control" id="inputEmail4">
+							{{-- <div class="form-group col-md-6">
 								<label for="inputPassword4">Confirm Password</label>
 								<input type="password" name="password_confirmation" class="form-control" id="inputPassword4">
-							</div>
+							</div> --}}
 						</div>
 						<div class="form-group">
 							<label class="form-label">Attach role</label>
 							<select class="form-control" name="role">
-								@foreach($roles as $role)
+								<option value="" selected disabled hidden>Choose here</option>
+								{{-- @foreach($roles as $role)
 								<option value="{{ $role->id }}">{{ $role->display_name }}</option>
-								@endforeach
+								@endforeach --}}
+								@if(count($user->roles) > 0)
+								
+									@foreach($roles as $role)
+									@if($user->roles[0]->id == $role->id)
+									<option value="{{ $role->id }}" selected>{{ $role->display_name }}</option>
+									@else
+									<option value="{{ $role->id }}">{{ $role->display_name }}</option>
+									@endif
+									@endforeach
+
+								@else
+									@foreach($roles as $role)
+									<option value="{{ $role->id }}">{{ $role->display_name }}</option>
+									@endforeach
+								@endif
+								
 							</select>
 						</div>
 						<button type="submit" class="btn btn-primary btn-sm">Save edit</button>

@@ -5,6 +5,7 @@
 <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
 <link href="{{ asset('css/jquery.treeview.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('css/amap.css') }}" class="href">
 @endsection
 
 @section('content')
@@ -65,16 +66,16 @@
         // map.add(marker);//添加到地图
         // map.remove(marker);
 
-        var infoWindow = new AMap.InfoWindow({ //创建信息窗体
-            isCustom: true,  //使用自定义窗体
-            content:'<div><a href="http://www.baidu.com">信息窗体</a></div>', //信息窗体的内容可以是任意html片段
-            offset: new AMap.Pixel(16, -45)
-        });
-        var onMarkerClick  =  function(e) {
-            infoWindow.open(map, e.target.getPosition());//打开信息窗体
-            console.log(e);
-            //e.target就是被点击的Marker
-        } 
+        // var infoWindow = new AMap.InfoWindow({ //创建信息窗体
+        //     isCustom: true,  //使用自定义窗体
+        //     content:'<div><a href="http://www.baidu.com">信息窗体</a></div>', //信息窗体的内容可以是任意html片段
+        //     offset: new AMap.Pixel(16, -45)
+        // });
+        // var onMarkerClick  =  function(e) {
+        //     infoWindow.open(map, e.target.getPosition());//打开信息窗体
+        //     console.log(e);
+        //     //e.target就是被点击的Marker
+        // } 
         // var marker = new AMap.Marker({
         //     icon: new AMap.Icon({
         //         size: [36, 36],
@@ -102,6 +103,51 @@
         //     }).open(map, e.target.getPosition());
         // });
 
+        //构建自定义信息窗体
+        function createInfoWindow(title, content) {
+            var info = document.createElement("div");
+            info.className = "custom-info input-card content-window-card";
+
+            //可以通过下面的方式修改自定义窗体的宽高
+            //info.style.width = "400px";
+            // 定义顶部标题
+            var top = document.createElement("div");
+            var titleD = document.createElement("div");
+            var closeX = document.createElement("img");
+            top.className = "info-top";
+            titleD.innerHTML = title;
+            closeX.src = "https://webapi.amap.com/images/close2.gif";
+            closeX.onclick = closeInfoWindow;
+
+            top.appendChild(titleD);
+            top.appendChild(closeX);
+            info.appendChild(top);
+
+            // 定义中部内容
+            var middle = document.createElement("div");
+            middle.className = "info-middle";
+            middle.style.backgroundColor = 'white';
+            middle.innerHTML = content;
+            info.appendChild(middle);
+
+            // 定义底部内容
+            var bottom = document.createElement("div");
+            bottom.className = "info-bottom";
+            bottom.style.position = 'relative';
+            bottom.style.top = '0px';
+            bottom.style.margin = '0 auto';
+            var sharp = document.createElement("img");
+            sharp.src = "https://webapi.amap.com/images/sharp.png";
+            bottom.appendChild(sharp);
+            info.appendChild(bottom);
+            return info;
+        }
+
+        //关闭信息窗体
+        function closeInfoWindow() {
+            map.clearInfoWindow();
+        }
+
         @foreach ($posts as $post)
             // title = '{{ $post->title }} ';
             // console.log(title);
@@ -110,8 +156,8 @@
             var lng = Number.parseFloat('{{ $post->coordinate_longitude }}');
             // console.log(lat, lng);
 
-            var img = '{{ $post->images }}';
-            // console.log(img.split(',')[0]);
+            var img0 = '{{ $post->images }}';
+            // console.log(img0.split(',')[0]);
 
             // var marker = new AMap.Marker({
             //     icon: new AMap.Icon({
@@ -144,10 +190,19 @@
             // })
 
             map.add(marker);
+
+            //实例化信息窗体
+            var title = '{{ $post->title }}',
+                content = [];
+            content.push("<img width='200' height='100' src="+img0.split(',')[0] + ">");
+            // content.push("<a href='posts/{{ $post->id }}'>详细信息</a>");
+            content.push("<a href=' {{ route('posts.show', $post->id) }} '>详细信息</a>");
+
             marker.on('click', function(e){
                 new AMap.InfoWindow({ //创建信息窗体
                     isCustom: true,  //使用自定义窗体
-                    content:'<div><a href="posts/{{ $post->id }}">{{ $post->title }}</a></div>', //信息窗体的内容可以是任意html片段
+                    // content:'<div><a href="posts/{{ $post->id }}">{{ $post->title }}</a></div>', //信息窗体的内容可以是任意html片段
+                    content: createInfoWindow(title, content.join("<br/>")),
                     offset: new AMap.Pixel(16, -45)
                 }).open(map, e.target.getPosition());
             });

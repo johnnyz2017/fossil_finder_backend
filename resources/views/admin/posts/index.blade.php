@@ -28,9 +28,9 @@
                                 <td>{{ $post->private ? 'No' : 'Yes' }}</td>
                                 <td>
                                     @if($post->published)
-                                    <a href="{{ route('admin.posts.destroy', $post) }}" class="btn btn-primary btn-sm">UnPublish</a>
+                                    <a href="{{ route('admin.posts.unpublish', $post) }}" class="btn btn-primary btn-sm">UnPublish</a>
                                     @else
-                                    <a href="{{ route('admin.posts.destroy', $post) }}" class="btn btn-primary btn-sm">Publish</a>
+                                    <a href="{{ route('admin.posts.publish', $post) }}" class="btn btn-primary btn-sm">Publish</a>
                                     @endif
                                 </td>
                                 <td>

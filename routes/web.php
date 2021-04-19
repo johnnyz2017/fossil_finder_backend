@@ -53,7 +53,9 @@ Route::post('menus', [MenuController::class, 'store'])->name('menus.store');
 // });
 Route::get('/hello', [HelloController::class, 'posts']);
 
-Route::resource('posts', PostController::class);
+// Route::resource('posts', PostController::class);
+Route::get('posts', [PostController::class, 'index']);
+Route::get('posts/{id}', [PostController::class, 'show'])->name('posts.show');
 Route::resource('users', UserController::class);
 // Route::resource([
 //     'users' => UserController::class,
@@ -68,6 +70,8 @@ Route::group(['middleware' => ['auth']], function () {
 			// Route::get('/', 'Admin\BoardController@index')->name('board');
 			Route::resource('users', App\Http\Controllers\Admin\UserController::class);
 			Route::resource('posts', App\Http\Controllers\Admin\PostController::class);
+			Route::get('posts/publish/{post}', [App\Http\Controllers\Admin\PostController::class, 'publish'])->name('posts.publish');
+			Route::get('posts/unpublish/{post}', [App\Http\Controllers\Admin\PostController::class, 'unpublish'])->name('posts.unpublish');
 			// Route::resource('roles', 'Admin\RoleController');
 			// Route::resource('permissions', 'Admin\PermissionController');
 		});

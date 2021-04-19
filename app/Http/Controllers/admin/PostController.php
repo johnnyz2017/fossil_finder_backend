@@ -16,7 +16,7 @@ class PostController extends Controller
     public function index()
     {
         // $posts = Post::latest()->paginate(10);
-        $posts = Post::with('user')->with('category')->paginate(10);
+        $posts = Post::with('user')->with('category')->where('private', '=', 'false')->paginate(10);
         $user = auth()->user();
         // $posts = User::all();
         // dd($posts);
@@ -64,6 +64,18 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         //
+    }
+
+    public function publish(Post $post){
+        $post->published = true;
+        $post->save();
+        return redirect(route('admin.posts.index'));
+    }
+
+    public function unpublish(Post $post){
+        $post->published = false;
+        $post->save();
+        return redirect(route('admin.posts.index'));
     }
 
     /**

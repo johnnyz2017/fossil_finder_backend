@@ -94,11 +94,20 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
+        // dd($user);
+        // dd($request->password);
+        if($request->password == null)
+        {
+            $user->update([
+                'name' => $request->name,
+            ]);
+        }else{
+            $user->update([
+                'name' => $request->name,
+                'password' => bcrypt($request->password)
+            ]);
+        }
+        
 
         $roles = $user->roles;
 
