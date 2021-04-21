@@ -11,7 +11,7 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Username</th>
+                                <th scope="col">Email</th>
                                 <th scope="col">Role</th>
                                 <th scope="col">Created</th>
                                 <th scope="col">Updated</th>
@@ -24,7 +24,8 @@
                                 <th scope="row">{{ $user->id }}</th>
                                 <td>
                                     {{-- <a href="{{ route('admin.users.show', $user) }}">{{ Str::limit($user->name, 25) }}</a> --}}
-                                    {{ Str::limit($user->name, 25) }}
+                                    {{-- {{ Str::limit($user->name, 25) }} --}}
+                                    {{ Str::limit($user->email, 25) }}
                                 </td>
                                 <td>
                                     {{-- {{ $user->hasRole('superadministrator') }} --}}
