@@ -76,7 +76,8 @@ class Category extends Model
 
         $data['label'] = $this->title;
         $data['key'] = "c_".(string)$this->id;
-        $data['children'] = $children;
+        if(count($children) > 0)
+            $data['children'] = $children;
         
         return $data;
     }
