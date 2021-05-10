@@ -30,8 +30,14 @@ class HomeController extends Controller
         $Categorys = Category::where('parent_id', '=', 0)->get();
         $tree='<ul id="browser" class="filetree"><li class="tree-view"></li>';
         foreach ($Categorys as $Category) {
-             $tree .='<li class="tree-view closed"><a class="tree-name">'.$Category->title.'</a>';
-             if(count($Category->childs)) {
+            if($Category->is_genus == 1){
+                $tree .='<li class="tree-view open"><em><a class="tree-name">'.$Category->title.'</a></em>';
+            }
+            else{
+                $tree .='<li class="tree-view open"><a class="tree-name">'.$Category->title.'</a>';
+            }
+            
+            if(count($Category->childs)) {
                 $tree .=$this->childView($Category);
             }
         }
@@ -42,13 +48,9 @@ class HomeController extends Controller
         $user = null;
 
         if(Auth::check()){
-            // dd('login');
             // $user_id = auth()->user()->id;
             // $user = User::find($user_id)->with('role');
-            // dd($user);
             $user = auth()->user();
-        }else{
-            // dd('not login');
         }
 
         return view('home',compact('tree', 'posts', 'user'));
@@ -58,12 +60,22 @@ class HomeController extends Controller
         $html ='<ul>';
         foreach ($Category->childs as $arr) {
             if(count($arr->childs)){
-            $html .='<li class="tree-view closed"><a class="tree-name">'.$arr->title.'</a>';                  
-                    $html.= $this->childView($arr);
-                }else{
-                    $html .='<li class="tree-view"><a class="tree-name">'.$arr->title.'</a>';                                 
-                    $html .="</li>";
-                }                                   
+                if($arr->is_genus == 1){
+                    $html .='<li class="tree-view closed"><em><a class="tree-name">'.$arr->title.'</a></em>';
+                }
+                else{
+                    $html .='<li class="tree-view closed"><a class="tree-name">'.$arr->title.'</a>';                  
+                }
+                $html.= $this->childView($arr);
+            }else{
+                if($arr->is_genus == 1){
+                    $html .='<li class="tree-view"><em><a class="tree-name">'.$arr->title.'</a></em>';
+                }
+                else{
+                    $html .='<li class="tree-view"><a class="tree-name">'.$arr->title.'</a>';                  
+                }                            
+                $html .="</li>";
+            }                                   
         }
         
         $html .="</ul>";

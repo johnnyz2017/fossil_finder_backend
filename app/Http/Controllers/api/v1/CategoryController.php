@@ -263,7 +263,8 @@ class CategoryController extends Controller
         $data = $this->validate($request, [
             'title' => 'required',
             'parent_id' => '',
-            'description' => ''
+            'description' => '',
+            'is_genus' => ''
         ]);
 
         if($request->get('parent_id') == null){
@@ -297,7 +298,7 @@ class CategoryController extends Controller
         }
         if($category->user_id != $user->id){
             return response()->json([
-                'message' => '非所有者或者管理员用户，无法操作删除',
+                'message' => '非所有者或者管理员用户，无法删除',
                 'code' => 401
             ], 200);
         }
@@ -325,17 +326,22 @@ class CategoryController extends Controller
                 'code' => 301
             ], 200);
         }
-        if($category->user_id != $user->id){
-            return response()->json([
-                'message' => '非所有者或者管理员用户，无法操作删除',
-                'code' => 401
-            ], 200);
+
+        if(Auth::user()->roles[0]->id > 1){
+            if($category->user_id != $user->id){
+                return response()->json([
+                    'message' => '非所有者或者管理员用户，无法更新',
+                    'code' => 401
+                ], 200);
+            }
         }
+        
 
         $data = $this->validate($request, [
             'title' => 'required',
             'parent_id' => '',
-            'description' => ''
+            'description' => '',
+            'is_genus' => ''
         ]);
 
         $data['user_id'] = $user->id;
@@ -360,7 +366,7 @@ class CategoryController extends Controller
         if($category->user_id != $user->id){
             if($user->role > 2){
                 return response()->json([
-                    'message' => '非所有者或者管理员用户，无法操作删除',
+                    'message' => '非所有者或者管理员用户，无法编辑',
                     'code' => 401
                 ], 200);
             }else{

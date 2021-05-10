@@ -21,6 +21,7 @@ class CreateCategoriesTable extends Migration
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->string('title');
             $table->string('description')->nullable();
+            $table->boolean('is_genus')->default(false);
             $table->timestamps();
         });
     }

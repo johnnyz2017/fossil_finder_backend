@@ -33,7 +33,8 @@ class CategoryFactory extends Factory
             // 'description' => Str::random(30)
             'title' => 'Category '.$this->faker->word(),
             // 'description' => $this->faker->sentence($nbWords = 6, $variableNbWords = true)
-            'description' => $this->faker->text(50)
+            'description' => $this->faker->text(50),
+            'is_genus' => false
         ];
     }
 }
