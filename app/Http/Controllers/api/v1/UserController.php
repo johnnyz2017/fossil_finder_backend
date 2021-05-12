@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,7 @@ class UserController extends Controller
 
     public function self(){
         $auser = auth()->user();
+        // dd(Auth::user()->roles);
         $user = User::find($auser->id);
 
         if($user == null){

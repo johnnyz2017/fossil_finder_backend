@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laratrust\Traits\LaratrustUserTrait;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -48,8 +49,35 @@ class User extends Authenticatable
         return $this->name;
     }
 
+    public function roleName(){
+        if (DB::table('role_user')->where('user_id', $this->id)->exists()) {
+            $role_id = DB::table('role_user')->where('user_id', $this->id)->first()->role_id;
+            $role = Role::find($role_id);
+            if($role === null) return "未知角色";
+            return $role->display_name;
+        }
+        return "未知角色";
+    }
+
+    public function roleID(){
+        if (DB::table('role_user')->where('user_id', $this->id)->exists()) {
+            $role_id = DB::table('role_user')->where('user_id', $this->id)->first()->role_id;
+            $role = Role::find($role_id);
+            if($role === null) return -1;
+            return $role->role_id;
+        }
+        return -1;
+    }
+
     public function role(){
-        return $this->role;
+        if (DB::table('role_user')->where('user_id', $this->id)->exists()) {
+            $role_id = DB::table('role_user')->where('user_id', $this->id)->first()->role_id;
+            dd($role_id);
+            $role = Role::find($role_id);
+            if($role === null) return null;
+            return $role;
+        }
+        return null;
     }
 
     public function categories(){
@@ -87,6 +115,8 @@ class User extends Authenticatable
     public function toArray()
     {
         $data = parent::toArray();
+        $data['role_name'] = $this->roleName();
+        $data['role_id'] = $this->roleID();
         $data['posts_count'] = $this->posts()->count();
         $data['categories_count'] = $this->categories()->count();
         $data['comments_count'] = $this->comments()->count();
