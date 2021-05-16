@@ -83,6 +83,9 @@ Route::get('v1/publishedposts', [PostController::class, 'publishedPostsViaAuth']
 Route::get('v1/unpublishedposts', [PostController::class, 'unpublishedPostsViaAuth'])->middleware('auth:api');
 Route::get('v1/privateposts', [PostController::class, 'privatePostsViaAuth'])->middleware('auth:api');
 
+Route::get('v1/mycomments', [UserController::class, 'commentsViaAuth'])->middleware('auth:api');
+Route::get('v1/postsfrommycomments', [UserController::class, 'postsOfCommentsViaAuth'])->middleware('auth:api');
+
 Route::get('v1/system', [FSystemController::class, 'index']);
 Route::get('v1/system/{id}', [FSystemController::class, 'show']);
 Route::get('v1/system/{id}/series', [FSystemController::class, 'series']);

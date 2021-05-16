@@ -10,6 +10,7 @@ use Laratrust\Traits\LaratrustUserTrait;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class User extends Authenticatable
 {
@@ -63,8 +64,8 @@ class User extends Authenticatable
         if (DB::table('role_user')->where('user_id', $this->id)->exists()) {
             $role_id = DB::table('role_user')->where('user_id', $this->id)->first()->role_id;
             $role = Role::find($role_id);
-            if($role === null) return -1;
-            return $role->role_id;
+            if($role == null) return -1;
+            return $role->id;
         }
         return -1;
     }
@@ -72,9 +73,8 @@ class User extends Authenticatable
     public function role(){
         if (DB::table('role_user')->where('user_id', $this->id)->exists()) {
             $role_id = DB::table('role_user')->where('user_id', $this->id)->first()->role_id;
-            dd($role_id);
             $role = Role::find($role_id);
-            if($role === null) return null;
+            if($role == null) return null;
             return $role;
         }
         return null;
@@ -122,6 +122,7 @@ class User extends Authenticatable
         $data['comments_count'] = $this->comments()->count();
         $data['private_posts_count'] = $this->private_posts()->count();
         $data['public_posts_count'] = $this->public_posts()->count();
+        $data['role'] = $this->role();
 
         return $data;
     }

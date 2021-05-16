@@ -5,7 +5,9 @@ namespace App\Http\Controllers\api\v1;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class UserController extends Controller
 {
@@ -23,12 +25,12 @@ class UserController extends Controller
         if($user == null){
             return response()->json([
                 'message' => 'Failed to find user',
-                'code' => 401
+                'statusCode' => 401
             ], 200);
         }
 
         return response()->json([
-            "code" => 200,
+            "statusCode" => 200,
             "data" => $user->toArray(),
             'message' => 'OK'
         ], 200);
@@ -50,12 +52,12 @@ class UserController extends Controller
         if($user == null)
             return response()->json([
                 'message' => 'Failed to find user',
-                'code' => 401
+                'statusCode' => 401
             ], 200);
         
         $posts = $user->posts;
         return response()->json([
-            "code" => 200,
+            "statusCode" => 200,
             "data" => $posts->toArray()
         ], 200);
     }
@@ -64,7 +66,7 @@ class UserController extends Controller
         $user = User::find($id);
         if($user == null){
             return response()->json([
-                "statusCode" => 200,
+                "statusCode" => 401,
                 "data" => json_encode($user)
             ]);
         }
@@ -77,10 +79,68 @@ class UserController extends Controller
     }
 
     public function comments($id){
+        dd($id);
         $user = User::find($id);
         if($user == null){
             return response()->json([
-                "statusCode" => 200,
+                "statusCode" => 401,
+                "data" => json_encode($user)
+            ]);
+        }
+        $comments = $user->comments;
+
+        return response()->json([
+            "statusCode" => 200,
+            "data" => json_encode($comments)
+        ]);
+    }
+
+    public function postsOfCommentsViaAuth(){
+        $user = Auth::user();
+        if($user == null){
+            return response()->json([
+                "statusCode" => 301,
+                "data" => json_encode($user)
+            ]);
+        }
+        $comments = $user->comments;
+        $posts = collect([]);
+        if(count($comments) > 0){
+            for($index =0; $index < count($comments); $index++){
+                $p_id = $comments[$index]->post_id;
+                if($p_id == null) continue;
+                if($posts->contains('id', $p_id)) continue;
+                $post = Post::find($p_id);
+                if($post != null){
+                    $posts->add($post);
+                }
+            }
+            // foreach($comments as $comment){
+            //     $p_id = $comment->post_id;
+            //     if($posts->contains(function($value, $p_id){
+            //         return $value->id == $p_id;
+            //     })) continue;
+            //     if($p_id != null){
+            //         $post = Post::find($p_id);
+            //         if($post != null){
+            //             $posts->add($post);
+            //         }
+            //     }
+            // }
+            // $posts->duplicates('id');
+        }
+
+        return response()->json([
+            'code' => 200,
+            "data" => $posts->toArray()
+        ], 200);
+    }
+
+    public function commentsViaAuth(){
+        $user = Auth::user();
+        if($user == null){
+            return response()->json([
+                "statusCode" => 301,
                 "data" => json_encode($user)
             ]);
         }
@@ -103,7 +163,7 @@ class UserController extends Controller
         $muser = User::find($user->id);
 
         $data = $this->validate($request, [
-            'name' => 'min:3 | max:50',
+            'name' => 'min:1 | max:50',
             'description' => '',
             'profile_image' => ''
         ]);
