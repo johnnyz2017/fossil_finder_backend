@@ -71,6 +71,7 @@ Route::get('v1/categories/{id}/deleteable', [CategoryController::class, 'deletea
 
 Route::post('v1/comments', [CommentController::class, 'store'])->middleware('auth:api');
 Route::get('v1/comments/{id}', [CommentController::class, 'show'])->middleware('auth:api');
+Route::post('v1/comments/{id}', [CommentController::class, 'update'])->middleware('auth:api');
 
 Route::get('v1/users/{id}', [UserController::class, 'show']);
 Route::get('v1/users', [UserController::class, 'index']);
