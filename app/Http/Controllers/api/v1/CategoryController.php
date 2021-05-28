@@ -267,6 +267,14 @@ class CategoryController extends Controller
             'is_genus' => ''
         ]);
 
+        $count = count(Category::where('title', $data['title'])->get());
+        if($count > 0){
+            return response()->json([
+                'message' => '分类名称不可以重复',
+                'code' => 300
+            ], 200);
+        }
+
         if($request->get('parent_id') == null){
             $data['parent_id'] = 0;
         }
@@ -343,6 +351,14 @@ class CategoryController extends Controller
             'description' => '',
             'is_genus' => ''
         ]);
+
+        $count = count(Category::where('title', $data['title'])->get());
+        if($count > 0){
+            return response()->json([
+                'message' => '分类名称不可以重复',
+                'code' => 300
+            ], 200);
+        }
 
         $data['user_id'] = $user->id;
 
