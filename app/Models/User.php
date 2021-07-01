@@ -70,6 +70,10 @@ class User extends Authenticatable
         return -1;
     }
 
+    public function sharedPosts(){
+        return $this->belongsToMany(\App\Models\Post::class);
+    }
+
     public function role(){
         if (DB::table('role_user')->where('user_id', $this->id)->exists()) {
             $role_id = DB::table('role_user')->where('user_id', $this->id)->first()->role_id;

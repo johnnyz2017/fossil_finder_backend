@@ -62,6 +62,22 @@ class UserController extends Controller
         ], 200);
     }
 
+    public function sharedPosts(){
+        $user = Auth()->user();
+        if($user == null){
+            return response()->json([
+                "statusCode" => 401,
+                "data" => json_encode($user)
+            ]);
+        }
+        $posts = $user->sharedPosts;
+
+        return response()->json([
+            "statusCode" => 200,
+            "data" => $posts->toArray()
+        ]);
+    }
+
     public function posts($id){
         $user = User::find($id);
         if($user == null){

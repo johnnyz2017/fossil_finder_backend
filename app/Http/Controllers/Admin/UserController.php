@@ -18,14 +18,14 @@ class UserController extends Controller
     public function index()
     {
         $roles = Role::with('permissions')->get();
-        // dd($roles);
         $users = User::latest()->paginate(10);
-        // $users = User::paginate(10);
-        // $role_id = auth()->user()-;
         $current_user = auth()->user();
-        // $users = User::all();
-        // dd($users);
-        return view('admin.users.index', compact('users', 'roles', 'current_user'));
+        if(count($current_user->roles) > 0){
+            if($current_user->roles[0]->id < 2){
+                return view('admin.users.index', compact('users', 'roles', 'current_user'));
+            }
+        } 
+        return view('errors.noauth');
     }
 
     /**
@@ -35,8 +35,14 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::with('permissions')->latest()->get();
-        return view('admin.users.create', compact('roles'));
+        $current_user = auth()->user();
+        if(count($current_user->roles) > 0){
+            if($current_user->roles[0]->id < 2){
+                $roles = Role::with('permissions')->latest()->get();
+                return view('admin.users.create', compact('roles'));
+            }
+        } 
+        return view('errors.noauth');
     }
 
     /**
@@ -47,18 +53,23 @@ class UserController extends Controller
      */
     public function store(CreateUserRequest $request)
     {
-        // dd($request);
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            // 'password' => Hash::make($request->password),
-            'password' => bcrypt($request->password),
-        ]);
-
-        $role = Role::find($request->role);
-        $user->attachRole($role);
-
-        return redirect(route('admin.users.index'));
+        $current_user = auth()->user();
+        if(count($current_user->roles) > 0){
+            if($current_user->roles[0]->id < 2){
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    // 'password' => Hash::make($request->password),
+                    'password' => bcrypt($request->password),
+                ]);
+        
+                $role = Role::find($request->role);
+                $user->attachRole($role);
+        
+                return redirect(route('admin.users.index'));
+            }
+        } 
+        return view('errors.noauth');
     }
 
     /**
@@ -69,7 +80,13 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('admin.users.show', compact('user'));
+        $current_user = auth()->user();
+        if(count($current_user->roles) > 0){
+            if($current_user->roles[0]->id < 2){
+                return view('admin.users.show', compact('user'));
+            }
+        } 
+        return view('errors.noauth');
     }
 
     /**
@@ -80,9 +97,14 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        // dd($user);
-        $roles = Role::with('permissions')->get();
-        return view('admin.users.edit', compact('user', 'roles'));
+        $current_user = auth()->user();
+        if(count($current_user->roles) > 0){
+            if($current_user->roles[0]->id < 2){
+                $roles = Role::with('permissions')->get();
+                return view('admin.users.edit', compact('user', 'roles'));
+            }
+        } 
+        return view('errors.noauth');
     }
 
     /**
@@ -94,31 +116,36 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        // dd($user);
-        // dd($request->password);
-        if($request->password == null)
-        {
-            $user->update([
-                'name' => $request->name,
-            ]);
-        }else{
-            $user->update([
-                'name' => $request->name,
-                'password' => bcrypt($request->password)
-            ]);
-        }
+        $current_user = auth()->user();
+        if(count($current_user->roles) > 0){
+            if($current_user->roles[0]->id < 2){
+                if($request->password == null)
+                {
+                    $user->update([
+                        'name' => $request->name,
+                    ]);
+                }else{
+                    $user->update([
+                        'name' => $request->name,
+                        'password' => bcrypt($request->password)
+                    ]);
+                }
+                
         
-
-        $roles = $user->roles;
-
-        foreach ($roles as $key => $value) {
-            $user->detachRole($value);
-        }
-
-        $role = Role::find($request->input('role'));
-        $user->attachRole($role);
-
-        return redirect(route('admin.users.index'));
+                $roles = $user->roles;
+        
+                foreach ($roles as $key => $value) {
+                    $user->detachRole($value);
+                }
+        
+                $role = Role::find($request->input('role'));
+                $user->attachRole($role);
+        
+                return redirect(route('admin.users.index'));
+            }
+        } 
+        return view('errors.noauth');
+        
     }
 
     /**
@@ -129,13 +156,19 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $roles = $user->roles;
+        $current_user = auth()->user();
+        if(count($current_user->roles) > 0){
+            if($current_user->roles[0]->id < 2){
+                $roles = $user->roles;
 
-        foreach ($roles as $key => $value) {
-            $user->detachRole($value);
-        }
-
-        $user->delete();
-        return redirect(route('admin.users.index'));
+                foreach ($roles as $key => $value) {
+                    $user->detachRole($value);
+                }
+        
+                $user->delete();
+                return redirect(route('admin.users.index'));
+            }
+        } 
+        return view('errors.noauth');
     }
 }

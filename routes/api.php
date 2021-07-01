@@ -44,6 +44,11 @@ Route::post('v1/posts', [PostController::class, 'store'])->middleware('auth:api'
 Route::post('v1/posts/{id}', [PostController::class, 'update'])->middleware('auth:api');
 Route::delete('v1/posts/{id}', [PostController::class, 'destroy'])->middleware('auth:api');
 
+Route::get('v1/sharedposts', [UserController::class, 'sharedPosts'])->middleware('auth:api');
+
+Route::post('v1/posts/{id}/removesharedusers', [PostController::class, 'removeSharedUsers'])->middleware('auth:api');
+Route::post('v1/posts/{id}/addsharedusers', [PostController::class, 'addSharedUsers'])->middleware('auth:api');
+Route::get('v1/posts/{id}/sharedusers', [PostController::class, 'sharedUsers'])->middleware('auth:api');
 Route::get('v1/posts/{id}/category', [PostController::class, 'category']);
 Route::get('v1/posts/{id}/user', [PostController::class, 'user']);
 Route::get('v1/search', [PostController::class, 'search']);

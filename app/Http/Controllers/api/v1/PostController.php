@@ -35,6 +35,171 @@ class PostController extends Controller
         );
     }
 
+    public function addUser($id){
+        //
+    }
+
+    public function sharedUsers($id) {
+        $post = \App\Models\Post::find($id);
+        
+        if($post == null){
+            return response()->json([
+                'code' => 404,
+                'success' => false,
+                'message' => 'Post not found',
+                'data' => []
+            ], 404);
+        }
+
+        $sharedUsers = $post->sharedUsers;
+        if(!$sharedUsers){
+            return response()->json([
+                'code' => 404,
+                'success' => false,
+                'message' => 'shared users not found',
+                'data' => []
+            ], 404);
+        }
+
+        return response()->json([
+            'code' => 200,
+            'success' => true,
+            'message' => 'OK',
+            "data" => $sharedUsers->toArray()
+        ], 200);
+    }
+
+    public function removeSharedUsers(Request $request, $id) {
+        // $user = auth()->user();
+        // if($user == null)
+        //     return response()->json([
+        //         'message' => '用户验证失败',
+        //         'code' => 401
+        //     ], 200);
+
+        $post = \App\Models\Post::find($id);
+        if($post == null){
+            return response()->json([
+                'code' => 404,
+                'success' => false,
+                'message' => '记录未发现',
+                'data' => []
+            ], 200);
+        }
+
+        // if($post->user_id != $user->id){
+        //     return response()->json([
+        //         'message' => '非所有者无法更新',
+        //         'code' => 401
+        //     ], 200);
+        // }
+
+        $data = $this->validate($request, [
+            'email' => 'required | email',
+        ]);
+        $sharedUser = User::where('email', '=', $data['email'])->first();
+        if($sharedUser == null){
+            return response()->json([
+                'code' => 404,
+                'success' => false,
+                'message' => '指定共享人员邮箱不正确，共享失败',
+                'data' => []
+            ], 200);
+        }
+
+        $post->sharedUsers()->detach($sharedUser->id);
+
+        $sharedUsers = $post->sharedUsers;
+        if(!$sharedUsers){
+            return response()->json([
+                'code' => 404,
+                'success' => false,
+                'message' => '共享用户邮箱未发现',
+                'data' => []
+            ], 200);
+        }
+
+        return response()->json([
+            'code' => 200,
+            'success' => true,
+            'message' => 'OK',
+            "data" => $sharedUsers->toArray()
+        ], 200);
+    }
+
+    public function addSharedUsers(Request $request, $id) {
+        $user = auth()->user();
+        if($user == null)
+            return response()->json([
+                'message' => '用户验证失败',
+                'code' => 401
+            ], 200);
+
+        $post = \App\Models\Post::find($id);
+        if($post == null){
+            return response()->json([
+                'code' => 404,
+                'success' => false,
+                'message' => '记录不存在',
+                'data' => []
+            ], 200);
+        }
+
+        if($post->user_id != $user->id){
+            return response()->json([
+                'message' => '非所有者无法更新',
+                'code' => 401
+            ], 200);
+        }
+
+        $data = $this->validate($request, [
+            'email' => 'required | email',
+        ]);
+        $sharedUser = User::where('email', '=', $data['email'])->first();
+        if($sharedUser == null){
+            return response()->json([
+                'code' => 404,
+                'success' => false,
+                'message' => '指定被分享人员邮箱不正确，共享失败',
+                'data' => []
+            ], 200);
+        }
+
+        if($post->sharedUsers()->count() > 0){
+            foreach($post->sharedUsers as $u){
+                if($u->id == $sharedUser->id){
+                    return response()->json([
+                        'code' => 301,
+                        'success' => false,
+                        'message' => '已分享给该指定人员',
+                        'data' => $post->sharedUsers->toArray()
+                    ], 200);
+                }
+            }
+        }
+
+
+
+        $post->sharedUsers()->attach($sharedUser->id);
+
+        $sharedUsers = $post->sharedUsers;
+        if(!$sharedUsers){
+            return response()->json([
+                'code' => 404,
+                'success' => false,
+                'message' => '分享用户未发现',
+                'data' => []
+            ], 200);
+        }
+
+        return response()->json([
+            'code' => 200,
+            'success' => true,
+            'message' => 'OK',
+            "data" => $sharedUsers->toArray()
+        ], 200);
+    }
+
     public function publishedPostsViaAuth(){
         $auser = auth()->user();
         $posts = Post::query()->where('user_id', '=', $auser->id)->where('published', true)->get();
@@ -156,18 +321,26 @@ class PostController extends Controller
                 'code' => 404,
                 'success' => false,
                 'message' => 'Post not found '
-            ], 400);
+            ], 200);
         }
 
         $user = auth()->user();
-        // dd($user);
         if($post->private == 1 || $post->published == 0){
             if($post->user_id != $user->id){
-                return response()->json([
-                    'code' => 302,
-                    'success' => false,
-                    'message' => 'Auth Failed'
-                ], 302);
+                $sharedUsers = $post->sharedUsers;
+                $existed = false;
+                if(count($sharedUsers) > 0){
+                    foreach($sharedUsers as $u){
+                        if($user->id == $u->id)
+                          $existed = true;
+                    }
+                }
+                if(!$existed)
+                    return response()->json([
+                        'code' => 302,
+                        'success' => false,
+                        'message' => '私有/未发布记录只有发布人和被共享者可以访问'
+                    ], 200);
             }
         }
  

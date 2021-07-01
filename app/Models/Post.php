@@ -15,6 +15,11 @@ class Post extends Model
         return $this->belongsTo(\App\Models\User::class, 'user_id', 'id');
     }
 
+    public function sharedUsers(){
+        // return $this->belongsToMany(\App\Models\User::class, 'user_post', 'user_id', 'id');
+        return $this->belongsToMany(\App\Models\User::class);
+    }
+
     public function category(){
         return $this->belongsTo(\App\Models\Category::class, 'category_id', 'id');
     }

@@ -54,6 +54,26 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::find($id);
+        
+        if($post->private == 1 || $post->published == 0){
+            if(!Auth::check()){
+                return redirect()->route('login');
+            }
+
+            $user = auth()->user();
+            if($post->user_id != $user->id){
+                $sharedUsers = $post->sharedUsers;
+                $existed = false;
+                if(count($sharedUsers) > 0){
+                    foreach($sharedUsers as $u){
+                        if($user->id == $u->id)
+                          $existed = true;
+                    }
+                }
+                if(!$existed)
+                    return view('errors.noauth');
+            }
+        }
         $comments = Comment::where('post_id', '=', $id)->get();
         $comments = Comment::with('user')->where('post_id', '=', $id)->get();
         return view('posts.show')->withPost($post)->withComments($comments);
